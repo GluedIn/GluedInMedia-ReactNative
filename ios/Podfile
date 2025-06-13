@@ -1,0 +1,80 @@
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+use_frameworks! :linkage => :static
+plugin 'cocoapods-user-defined-build-types'
+enable_user_defined_build_types!
+
+target 'GluedInMedia' do
+
+ pod 'GluedInSDK', '5.3.1', :build_type => :dynamic_framework
+
+# pod 'GluedInSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInSDK/'
+# pod 'GluedInCoreSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInCoreSDK/'
+# pod 'GluedInFeedSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInFeedSDK/'
+# pod 'GluedInCreatorSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInCreatorSDK/'
+# pod 'GluedInRewardSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInRewardSDK/'
+# pod 'GluedInDMSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInDMSDK/'
+
+  #pod 'RNGoogleSignin', :path => '../node_modules/@react-native-google-signin/google-signin'
+#  pod 'FBSDKCoreKit', '~> 8.2.0'
+#  pod 'FBSDKLoginKit', '~> 8.2.0'
+#  pod 'FBSDKShareKit', '~> 8.2.0'
+#  pod 'Google-Mobile-Ads-SDK'
+  config = use_native_modules!
+#  pod 'Kingfisher', '6.1.1', :build_type => :dynamic_framework
+
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  post_install do |installer|
+    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    
+    minOSTargetVersion = 12.4
+         dynamicFrameworks = {
+           'SkeletonView': 11.0,
+         }
+
+         # Set deployment target for all pods to 13.4 by default
+         installer.pods_project.targets.each do |target|
+           target.build_configurations.each do |config|
+             config.build_settings["DEVELOPMENT_TEAM"] = "AL3NMW8K8U"
+             if dynamicFrameworks.has_key?(target.name.to_sym)
+               config.build_settings["BUILD_LIBRARIES_FOR_DISTRIBUTION"] = 'Yes'
+               config.build_settings["BUILD_LIBRARY_FOR_DISTRIBUTION"] = 'Yes'
+               config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = dynamicFrameworks[target.name.to_sym]
+             else
+               config.build_settings["BUILD_LIBRARIES_FOR_DISTRIBUTION"] = 'No'
+               config.build_settings["BUILD_LIBRARY_FOR_DISTRIBUTION"] = 'No'
+               config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = minOSTargetVersion
+             end
+           end
+         end
+         
+         
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
+    )
+  end
+end

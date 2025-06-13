@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>GluedInMedia</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GluedInConfiguration</key>
+	<dict>
+		<key>ANDROID_PRODUCT_PACKAGE</key>
+		<string>${ANDROID_PRODUCT_PACKAGE}</string>
+		<key>API_KEY</key>
+		<string>cc56b97f-3b80-4117-ba42-62bcde357365</string>
+		<key>APP_STORE_ID</key>
+		<string>1622358421</string>
+		<key>ASSOCIATED_DOMAIN</key>
+		<string>gluedincard.page.link</string>
+		<key>BACK_ENABLE</key>
+		<string>1</string>
+		<key>CLIENT_ID</key>
+		<string>484226827821-dnup9ta4e82espmafj6h75jtjl50lh10.apps.googleusercontent.com</string>
+		<key>DIRECT_MESSAGE_URL</key>
+		<string>https://chat-server.gluedin.io/</string>
+		<key>DISABLE_DEFAULT_SHARE</key>
+		<false/>
+		<key>ENABLE_DEFAULT_PROFILE</key>
+		<false/>
+		<key>IS_AUTH_SKIP</key>
+		<string>1</string>
+		<key>IS_BOTTOM_BAR_ENABLE</key>
+		<string>1</string>
+		<key>IS_DEBUG_MODE</key>
+		<true/>
+		<key>IS_FOLLOW_ENABLE_ONFEED</key>
+		<true/>
+		<key>MINIMUM_VIEW_DURATION</key>
+		<integer>3</integer>
+		<key>PARENT_APP_ENABLE</key>
+		<string>0</string>
+		<key>SECRET_KEY</key>
+		<string>5703a587-9146-49cb-8ca6-b7ad14d64445</string>
+		<key>SERVER_URL</key>
+		<string>https://stag-v2-api.gluedin.io</string>
+		<key>TIME_TO_REFRESH_BANDWIDTH</key>
+		<integer>60</integer>
+		<key>VERTICAL_FEED</key>
+		<string>1</string>
+	</dict>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string> This allows you to capture photos, videos, add effects and preview visuals for posting on $(PRODUCT_NAME)</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) to access location data from the device for product recommendation</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) to access location data from the device for product recommendation</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This allows you to add sound while recording videos</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>It will let $(PRODUCT_NAME) to access photos and videos from your gallery and suggest them to share</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>It will let $(PRODUCT_NAME) to access photos and videos from your gallery and suggest them to share</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>$(PRODUCT_NAME) may use this data to deliver personalized ads to you</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Montserrat-Black.ttf</string>
+		<string>Montserrat-BlackItalic.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-BoldItalic.ttf</string>
+		<string>Montserrat-ExtraBold.ttf</string>
+		<string>Montserrat-ExtraBoldItalic.ttf</string>
+		<string>Montserrat-ExtraLight.ttf</string>
+		<string>Montserrat-ExtraLightItalic.ttf</string>
+		<string>Montserrat-Italic.ttf</string>
+		<string>Montserrat-Light.ttf</string>
+		<string>Montserrat-LightItalic.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-MediumItalic.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-SemiBoldItalic.ttf</string>
+		<string>Montserrat-Thin.ttf</string>
+		<string>Montserrat-ThinItalic.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>FontAwesome6_Brands.ttf</string>
+		<string>FontAwesome6_Regular.ttf</string>
+		<string>FontAwesome6_Solid.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>SF UI Display-Bold.ttf</string>
+		<string>SF UI Display-Medium.ttf</string>
+		<string>SF UI Display-Regular.ttf</string>
+		<string>SF UI Display-Semibold.ttf</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>
