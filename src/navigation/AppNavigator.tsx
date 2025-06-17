@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, NativeModules} from 'react-native';
+import {TouchableOpacity, Text, View} from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
@@ -8,6 +8,7 @@ import ShortsScreen from '../screens/ShortsScreen';
 import CustomTabBar from './components/TabIcon';
 import AppLogo from './components/AppLogo';
 import SignInScreen from '../screens/LoginScreen';
+import {useNavigation} from '@react-navigation/native';
 
 const AppNavigator = ({
   setIsAuthenticated,
@@ -16,22 +17,6 @@ const AppNavigator = ({
   isAuthenticated,
 }: any) => {
   const Stack = createBottomTabNavigator();
-  const {GluedInBridge} = NativeModules;
-
-  const onGluedInLaunchPress = async () => {
-    try {
-      GluedInBridge.launchSDK((error: any, result: any) => {
-        if (error) {
-          console.error('Error during launchSDK:', error);
-        } else {
-          console.log('LaunchSDK result:', result);
-        }
-      });
-      console.error('No user data found');
-    } catch (error) {
-      console.error('Error in onGluedInLaunchPress:', error);
-    }
-  };
 
   return (
     <Stack.Navigator
@@ -69,9 +54,21 @@ const AppNavigator = ({
           },
           headerLeft: () => (
             <TouchableOpacity
-              style={{paddingHorizontal: 16}}
+              style={{
+                paddingHorizontal: 16,
+              }}
               onPress={() => navigation.navigate('Home')}>
-              <ArrowLeft style={{marginLeft: 2, width: 128}} size={24} />
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <ArrowLeft size={20} />
+                <Text
+                  style={{
+                    marginLeft: 6,
+                    fontSize: 16,
+                    fontWeight: '600',
+                  }}>
+                  The Rising Voice
+                </Text>
+              </View>
             </TouchableOpacity>
           ),
         })}
@@ -79,9 +76,8 @@ const AppNavigator = ({
       />
 
       <Stack.Screen
-        name = "Shorts"
+        name="Shorts"
         component={() => {
-          onGluedInLaunchPress();
           return null;
         }}
       />

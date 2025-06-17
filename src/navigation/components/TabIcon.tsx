@@ -8,8 +8,9 @@ import {
   User,
 } from 'lucide-react-native';
 import {Fragment, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View, NativeModules} from 'react-native';
 import LogoutModal from './LogoutModal';
+import Config from '../../constants/Config';
 
 const TabIcon = ({
   icon: Icon,
@@ -37,6 +38,7 @@ const CustomTabBar = ({
   isGuestLogin,
 }: any) => {
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+  const {GluedInBridge} = NativeModules;
 
   const tabIcons = [
     {name: 'Home', icon: HomeIcon},
@@ -45,6 +47,28 @@ const CustomTabBar = ({
     {name: 'Notifications', icon: Bell},
     {name: 'Profile', icon: isAuthenticated ? LogOut : User},
   ];
+
+  const onGluedInLaunchPress = async () => {
+    try {
+      GluedInBridge.launchSDK(
+        Config.API_KEY,
+        Config.SECRET_KEY,
+        Config.DEFAULT_EMAIl,
+        Config.DEFAULT_PASSWORD,
+        Config.DEFAULT_FULLNAME,
+        Config.PERSONA_TYPE,
+        (error: any, result: any) => {
+          if (error) {
+            console.error('Error during launchSDK:', error);
+          } else {
+            console.log('LaunchSDK result:', result);
+          }
+        },
+      );
+    } catch (error) {
+      console.error('Error in onGluedInLaunchPress:', error);
+    }
+  };
 
   const handleProfilePress = () => {
     setLogoutModalVisible(true);
@@ -59,42 +83,6 @@ const CustomTabBar = ({
 
   return (
     <Fragment>
-      {/* <View className="flex-row justify-around items-center bg-white py-3 border-t border-gray-200">
-        {tabIcons.map((tab, index) => {
-          const isFocused = state.index === index;
-          const onPress = () => {
-            if (isAuthenticated && tab.name === 'Profile') {
-              handleProfilePress();
-              return;
-            }
-
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: state.routes[index].key,
-            });
-
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(state.routes[index].name);
-            }
-          };
-
-          return (
-            <TouchableOpacity
-              key={tab.name}
-              onPress={onPress}
-              className={`${
-                tab.name === 'Shorts' ? 'bg-blue-600 p-2 rounded-full' : ''
-              } items-center justify-center`}>
-              <TabIcon
-                //@ts-ignore
-                icon={tab.icon}
-                isFocused={isFocused}
-                isSpecial={tab.special}
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </View> */}
       <View
         style={{
           flexDirection: 'row',
@@ -110,6 +98,10 @@ const CustomTabBar = ({
           const onPress = () => {
             if (isAuthenticated && tab.name === 'Profile') {
               handleProfilePress();
+              return;
+            }
+            if (tab.name === 'Shorts') {
+              onGluedInLaunchPress();
               return;
             }
             const event = navigation.emit({

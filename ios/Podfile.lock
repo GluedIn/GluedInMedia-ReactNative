@@ -20,27 +20,27 @@ PODS:
   - FBLazyVector (0.77.1)
   - fmt (11.0.2)
   - glog (0.3.5)
-  - GluedInCoreSDK (5.3.1)
-  - GluedInCreatorSDK (5.3.1):
+  - GluedInCoreSDK (5.3.2)
+  - GluedInCreatorSDK (5.3.2):
     - AFNetworking
-    - GluedInCoreSDK (= 5.3.1)
+    - GluedInCoreSDK (= 5.3.2)
     - SDWebImage
-  - GluedInDMSDK (5.3.1):
-    - GluedInCoreSDK (= 5.3.1)
+  - GluedInDMSDK (5.3.2):
+    - GluedInCoreSDK (= 5.3.2)
     - SDWebImage
-  - GluedInFeedSDK (5.3.1):
-    - GluedInCoreSDK (= 5.3.1)
+  - GluedInFeedSDK (5.3.2):
+    - GluedInCoreSDK (= 5.3.2)
     - SDWebImage
     - SkeletonView
-  - GluedInRewardSDK (5.3.1):
-    - GluedInCoreSDK (= 5.3.1)
+  - GluedInRewardSDK (5.3.2):
+    - GluedInCoreSDK (= 5.3.2)
     - SDWebImage
-  - GluedInSDK (5.3.1):
-    - GluedInCoreSDK (= 5.3.1)
-    - GluedInCreatorSDK (= 5.3.1)
-    - GluedInDMSDK (= 5.3.1)
-    - GluedInFeedSDK (= 5.3.1)
-    - GluedInRewardSDK (= 5.3.1)
+  - GluedInSDK (5.3.2):
+    - GluedInCoreSDK (= 5.3.2)
+    - GluedInCreatorSDK (= 5.3.2)
+    - GluedInDMSDK (= 5.3.2)
+    - GluedInFeedSDK (= 5.3.2)
+    - GluedInRewardSDK (= 5.3.2)
     - SDWebImage
   - hermes-engine (0.77.1):
     - hermes-engine/Pre-built (= 0.77.1)
@@ -1873,9 +1873,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - SDWebImage (5.21.0):
-    - SDWebImage/Core (= 5.21.0)
-  - SDWebImage/Core (5.21.0)
+  - SDWebImage (5.21.1):
+    - SDWebImage/Core (= 5.21.1)
+  - SDWebImage/Core (5.21.1)
   - SkeletonView (1.30.4)
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
@@ -1887,7 +1887,7 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - GluedInSDK (= 5.3.1)
+  - GluedInSDK (= 5.3.2)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -2128,12 +2128,12 @@ SPEC CHECKSUMS:
   FBLazyVector: 79c4b7ec726447eec5f8593379466bd9fde1aa14
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
-  GluedInCoreSDK: e026b99a50138306b3ebc671cacbbb4487dfdbbc
-  GluedInCreatorSDK: 06faa3537fc9fc5deb12a736067f66835ad0939d
-  GluedInDMSDK: bfe7b54dd278b72d520ff64feaacc38fc0f0fdd9
-  GluedInFeedSDK: e1709c4430610bb38f31f62cafe8890cc2e7e6bd
-  GluedInRewardSDK: 4cbf7ff693369757fb037132ea2a2bcb587167fa
-  GluedInSDK: 46e7ac0483e42f09242c7ba68e9cb407a1633b6e
+  GluedInCoreSDK: 794243a60e44c127bbdcdd728b07c629010e065b
+  GluedInCreatorSDK: 449189c6cf5024b22f47c7b30a6b334da0aaf8ec
+  GluedInDMSDK: 386b850b0e6ee4447dffa14b020d6eca6e8632a9
+  GluedInFeedSDK: 70bfbe0b42c239188a89f1bb543e0364022df8c6
+  GluedInRewardSDK: 3355ecd72198958f85a940392d9bd0c146a1582e
+  GluedInSDK: c54bec433c4db7ab4b805cfe6be9b18e2921900e
   hermes-engine: ccc24d29d650ea725d582a9a53d57cd417fbdb53
   RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
   RCTDeprecation: 664055db806cce35c3c1b43c84414dd66e117ae6
@@ -2200,11 +2200,11 @@ SPEC CHECKSUMS:
   RNScreens: 39b2b81ef7e0d93386810ac7c1860b6248bb1e15
   RNSVG: e10d4a44b00f90e82adeafcbcd5eab3ed0ff3efa
   RNVectorIcons: f3e9354fca73876447d183d4b18955e52cd3695c
-  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
+  SDWebImage: f29024626962457f3470184232766516dee8dfea
   SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 28b8cda182ee3092ff80203da66dcb3ffc8cf401
 
-PODFILE CHECKSUM: f2ea3e190ed6462d055db2f868dc460c28ba1eaa
+PODFILE CHECKSUM: 2967d5bd77b70d8e2a2099355f34bf1bc3a0d3fb
 
 COCOAPODS: 1.16.2

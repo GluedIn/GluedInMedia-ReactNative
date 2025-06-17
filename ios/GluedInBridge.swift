@@ -239,13 +239,27 @@ class GluedInBridge: RCTEventEmitter {
   
   //MARK: - Launch SDK as guest -
   @objc
-  func launchSDK(_ callback: @escaping RCTResponseSenderBlock) {
-    GluedInCore.shared.initSdk { [weak self] in
-      self?.launchSDKAsGuest { isSuccess, error in
-        callback([NSNull(), "Launch successful"])
-      }
+  func launchSDK(
+    _ apiKey: String,
+    secretKey: String,
+    email: String,
+    password: String,
+    fullName: String,
+    persona: String,
+    callback: @escaping RCTResponseSenderBlock
+  ) {
+    GluedIn.shared.initSdk(apiKey: apiKey, secretKey: secretKey) { [weak self] in
+      guard let self = self else { return }
+      self.launchGluedIn(
+        email: email,
+        password: password,
+        fullName: fullName,
+        persona: persona,
+        onlyShortsSubFeed: false,
+        callback: callback
+      )
     } failure: { error, code in
-      print(error)
+      callback([error, NSNull()])
     }
   }
   

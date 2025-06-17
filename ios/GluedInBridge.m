@@ -10,7 +10,13 @@
 
 @interface RCT_EXTERN_MODULE(GluedInBridge, NSObject)
 
-RCT_EXTERN_METHOD(launchSDK:(RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(launchSDK:(NSString *)apiKey
+                  secretKey:(NSString *)secretKey
+                  email:(NSString *)email
+                  password:(NSString *)password
+                  fullName:(NSString *)fullName
+                  persona:(NSString *)persona
+                  callback:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(initializeSDKOnLaunch:(NSString *)apiKey secretKey:(NSString *)secretKey callback:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(performLogin:(NSString *)username password:(NSString *)password callback:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(performSignup:(NSString *)name email:(NSString *)email password:(NSString *)password username:(NSString *)username callback:(RCTResponseSenderBlock)callback)

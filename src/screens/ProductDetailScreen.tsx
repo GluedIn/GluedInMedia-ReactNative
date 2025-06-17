@@ -119,15 +119,15 @@ const ProductDetailScreen = ({navigation}: any) => {
   const onCallSubFeed = async (item: any) => {
     GluedInBridge.launchSDKFromMicrocommunity(
       Config.ASSET_ID,
-      item.title,
-      12,
-      item.thumbnailUrl,
-      '10-1-2025',
-      '30-12-2024',
-      'google.com',
-      15,
-      'google.com',
-      '$',
+      Config.ASSET_NAME,
+      Config.ASSET_DISCOUNT_PRICE,
+      Config.ASSET_IMAGE_URL,
+      Config.ASSET_DISCOUNT_END_DATE,
+      Config.ASSET_DISCOUNT_START_DATE,
+      Config.ASSET_IMAGE_URL,
+      Config.ASSET_MRP,
+      Config.ASSET_SHOPPABLE_LINK,
+      Config.ASSET_CURRENCY_SYMBOL,
       item.topicId,
       (error: any, result: any) => {
         if (error) {
