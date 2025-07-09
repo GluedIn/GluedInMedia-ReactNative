@@ -6,11 +6,12 @@ const Config = {
   DEFAULT_EMAIl: 'amit@gluedin.io',
   DEFAULT_PASSWORD: '123456789',
   DEFAULT_FULLNAME: "Amit Choudhary",
+  DEFAULT_PROFILEPIC: "https://img.freepik.com/premium-vector/people-profile-graphic_24911-21373.jpg",
   PERSONA_TYPE: "",
-  
-  VIDEO_RAILID:'a9d89921-c9b3-427d-9757-ad7629f3cb33',
+
+  VIDEO_RAILID: 'a9d89921-c9b3-427d-9757-ad7629f3cb33',
   SERIES_RAILID: '804108b8-7a80-4c71-9882-794c6ae2ce94',
-  
+
   ASSET_ID: "478b2071-8801-4355-b943-43ac81cce438",
   ASSET_NAME: "Gucci",
   ASSET_DISCOUNT_PRICE: "200",

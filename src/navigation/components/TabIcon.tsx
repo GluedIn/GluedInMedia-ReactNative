@@ -7,17 +7,18 @@ import {
   ShoppingBag,
   User,
 } from 'lucide-react-native';
-import {Fragment, useState} from 'react';
-import {TouchableOpacity, View, NativeModules} from 'react-native';
+import { Fragment, useState } from 'react';
+import { TouchableOpacity, View, NativeModules } from 'react-native';
 import LogoutModal from './LogoutModal';
 import Config from '../../constants/Config';
+import { Platform } from 'react-native';
 
 const TabIcon = ({
   icon: Icon,
   isFocused,
   isSpecial = false,
 }: {
-  icon: React.ComponentType<{color: string; size: number}>;
+  icon: React.ComponentType<{ color: string; size: number }>;
   isFocused: boolean;
   isSpecial?: boolean;
 }) => {
@@ -38,33 +39,44 @@ const CustomTabBar = ({
   isGuestLogin,
 }: any) => {
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-  const {GluedInBridge} = NativeModules;
+  const { GluedInBridge, NavigationModule } = NativeModules;
 
   const tabIcons = [
-    {name: 'Home', icon: HomeIcon},
-    {name: 'Favorite', icon: Search},
-    {name: 'Shorts', icon: ShoppingBag, special: true},
-    {name: 'Notifications', icon: Bell},
-    {name: 'Profile', icon: isAuthenticated ? LogOut : User},
+    { name: 'Home', icon: HomeIcon },
+    { name: 'Favorite', icon: Search },
+    { name: 'Shorts', icon: ShoppingBag, special: true },
+    { name: 'Notifications', icon: Bell },
+    { name: 'Profile', icon: isAuthenticated ? LogOut : User },
   ];
 
   const onGluedInLaunchPress = async () => {
     try {
-      GluedInBridge.launchSDK(
-        Config.API_KEY,
-        Config.SECRET_KEY,
-        Config.DEFAULT_EMAIl,
-        Config.DEFAULT_PASSWORD,
-        Config.DEFAULT_FULLNAME,
-        Config.PERSONA_TYPE,
-        (error: any, result: any) => {
-          if (error) {
-            console.error('Error during launchSDK:', error);
-          } else {
-            console.log('LaunchSDK result:', result);
-          }
-        },
-      );
+
+      if (Platform.OS === 'ios') {
+        GluedInBridge.launchSDK(
+          Config.API_KEY,
+          Config.SECRET_KEY,
+          Config.DEFAULT_EMAIl,
+          Config.DEFAULT_PASSWORD,
+          Config.DEFAULT_FULLNAME,
+          Config.PERSONA_TYPE,
+          (error: any, result: any) => {
+            if (error) {
+              console.error('Error during launchSDK:', error);
+            } else {
+              console.log('LaunchSDK result:', result);
+            }
+          },
+        );
+      } else {
+        NavigationModule.launchGluedInSDK(Config.API_KEY,
+          Config.SECRET_KEY,
+          Config.BASE_URL,
+          Config.DEFAULT_EMAIl,
+          Config.DEFAULT_PASSWORD,
+          Config.DEFAULT_FULLNAME,
+          Config.DEFAULT_PROFILEPIC);
+      }
     } catch (error) {
       console.error('Error in onGluedInLaunchPress:', error);
     }
@@ -118,13 +130,13 @@ const CustomTabBar = ({
               key={tab.name}
               onPress={onPress}
               style={[
-                {alignItems: 'center', justifyContent: 'center'},
+                { alignItems: 'center', justifyContent: 'center' },
                 tab.name === 'Shorts'
                   ? {
-                      backgroundColor: '#2563EB', // Tailwind blue-600
-                      padding: 8, // Tailwind p-2 ~8px
-                      borderRadius: 9999, // rounded-full
-                    }
+                    backgroundColor: '#2563EB', // Tailwind blue-600
+                    padding: 8, // Tailwind p-2 ~8px
+                    borderRadius: 9999, // rounded-full
+                  }
                   : {},
               ]}>
               <TabIcon

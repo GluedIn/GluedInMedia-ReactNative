@@ -3,26 +3,28 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   NativeModules,
+  Pressable
 } from 'react-native';
-const {GluedInBridge} = NativeModules;
-import React, {useEffect, useState} from 'react';
+const { GluedInBridge, NavigationModule } = NativeModules;
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   ImageBackground,
   ScrollView,
   NativeEventEmitter,
+  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ChallengeInfo, ChallengeResponse} from './ChallengeModel';
+import { ChallengeInfo, ChallengeResponse } from './ChallengeModel';
 import Config from '../constants/Config';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ProductDetailScreen = ({navigation}: any) => {
+const ProductDetailScreen = ({ navigation }: any) => {
   const [widgetData, setWidgetData] = useState<any[]>([]); // State to store widget data
   const [isCreatorVisible, setIsCreatorVisible] = useState(false); // State for creator visibility
+  const [buttonLabel, setButtonLabel] = useState<string>('Loading...');
   const [isLeaderBoardVisible, setIsLeaderBoardVisible] = useState(false); // State for creator visibility
   const [isRewardVisible, setIsRewardVisible] = useState(false); // State for creator visibility
 
@@ -32,80 +34,146 @@ const ProductDetailScreen = ({navigation}: any) => {
 
   const [productDetail, setProductDetail] = useState(null);
 
-  var widgetResponse: ChallengeResponse;
+  // var widgetResponse: ChallengeResponse;
+  const [widgetResponse, setWidgetResponse] = React.useState<ChallengeResponse | null>(null);
+
   var productId = 0;
 
   useEffect(() => {
+    fetchRailData();
+  }, []);
+
+  const fetchRailData = () => {
+    // Add your logic here (e.g., API call, state setup)
     console.log('useEffect for GluedInBridge called');
 
-    const fetchData = async () => {
-      const data = await getUserData('productDetailInfo');
-      setProductDetail(data); // Update state with the fetched data
-    };
 
-    fetchData(); // Call the async function
+    if (Platform.OS === 'ios') {
 
-    console.log('Product item detail ', productDetail);
-    if (
-      !GluedInBridge ||
-      typeof GluedInBridge.initWithUserInfo !== 'function'
-    ) {
-      console.error('GluedInBridge is not properly initialized.');
-      return;
-    }
+      const fetchData = async () => {
+        const data = await getUserData('productDetailInfo');
+        setProductDetail(data); // Update state with the fetched data
+      };
 
-    GluedInBridge.initWithUserInfo(
-      Config.API_KEY,
-      Config.SECRET_KEY,
-      Config.DEFAULT_EMAIl,
-      Config.DEFAULT_PASSWORD,
-      Config.DEFAULT_FULLNAME,
-      (error: any, result: any) => {
-        if (error) {
-          console.error('Error during the init:', error);
-        } else {
-          GluedInBridge.widgetDetailWithFeed(
-            Config.ASSET_ID,
-            (error: any, result: any) => {
-              if (result && result.WidgetResponse) {
-                widgetResponse = result.WidgetResponse;
-                const creatorEnabled =
-                  widgetResponse.result?.creatorEnabled ?? false;
-                const LeaderBoardEnabled =
-                  widgetResponse.result?.challengeInfo?.leaderboardEnabled ??
-                  false;
-                const challangeInfoData =
-                  widgetResponse.result?.challengeInfo ?? null;
-                setChallangeInfo(challangeInfoData);
-                setIsCreatorVisible(creatorEnabled); // Set state for button visibility
-                setIsLeaderBoardVisible(LeaderBoardEnabled);
+      fetchData(); // Call the async function
 
-                const rewardEnabled = result.isRewardEnable ?? false;
-                setIsRewardVisible(rewardEnabled);
+      console.log('Product item detail ', productDetail);
+      if (
+        !GluedInBridge ||
+        typeof GluedInBridge.initWithUserInfo !== 'function'
+      ) {
+        console.error('GluedInBridge is not properly initialized.');
+        return;
+      }
 
-                if (widgetResponse.result.widgetEnabled) {
-                  const feedModelResponse = result.FeedDataModel.result;
-                  if (feedModelResponse.length > 0) {
-                    setWidgetData(feedModelResponse);
+      GluedInBridge.initWithUserInfo(
+        Config.API_KEY,
+        Config.SECRET_KEY,
+        Config.DEFAULT_EMAIl,
+        Config.DEFAULT_PASSWORD,
+        Config.DEFAULT_FULLNAME,
+        (error: any, result: any) => {
+          if (error) {
+            console.error('Error during the init:', error);
+          } else {
+            GluedInBridge.widgetDetailWithFeed(
+              Config.ASSET_ID,
+              (error: any, result: any) => {
+                if (result && result.WidgetResponse) {
+                  setWidgetResponse(result.WidgetResponse);
+                  const creatorEnabled =
+                    widgetResponse?.result?.creatorEnabled ?? false;
+                  const LeaderBoardEnabled =
+                    widgetResponse?.result?.challengeInfo?.leaderboardEnabled ??
+                    false;
+                  const challangeInfoData =
+                    widgetResponse?.result?.challengeInfo ?? null;
+                  setChallangeInfo(challangeInfoData);
+                  setIsCreatorVisible(creatorEnabled); // Set state for button visibility
+                  setIsLeaderBoardVisible(LeaderBoardEnabled);
+
+                  const rewardEnabled = result.isRewardEnable ?? false;
+                  setIsRewardVisible(rewardEnabled);
+
+                  if (widgetResponse?.result?.widgetEnabled == true) {
+                    const feedModelResponse = result.FeedDataModel.result;
+                    if (feedModelResponse.length > 0) {
+                      setWidgetData(feedModelResponse);
+                    }
+                  } else {
+                    console.error(
+                      'widgetEnabled is false or not available:', "false"
+                    );
                   }
-                } else {
-                  console.error(
-                    'widgetEnabled is false or not available:',
-                    widgetResponse.result.widgetEnabled,
-                  );
                 }
-              }
-              if (error) {
-                console.error('Error during the widgetDetailWithFeed:', error);
-              } else {
-              }
-            },
-          );
-          console.log('PerformLogin result', result);
+                if (error) {
+                  console.error('Error during the widgetDetailWithFeed:', error);
+                } else {
+                }
+              },
+            );
+            console.log('PerformLogin result', result);
+          }
+        },
+      );
+    }
+    else {
+      fetchMicroCommunityDataFromAndroidSDK();
+    }
+  };
+
+  const fetchMicroCommunityDataFromAndroidSDK = async () => {
+    try {
+      console.error('GluedIn validateGluedInSDKSilently: ');
+      const sdkInit = await NavigationModule.validateGluedInSDKSilently(Config.API_KEY,
+        Config.SECRET_KEY,
+        Config.BASE_URL,
+        Config.DEFAULT_EMAIl,
+        Config.DEFAULT_PASSWORD,
+        Config.DEFAULT_FULLNAME,
+        Config.DEFAULT_PROFILEPIC);
+      console.error('GluedIn Android SDK Init sdkInit: ', sdkInit);
+      if (sdkInit == 'success') {
+
+        const resultMap = await NavigationModule.fetchMicroCommunityDataFromAndroidSDK(Config.ASSET_ID);
+        console.log('fetchMicroCommunityDataFromAndroidSDKe, successWidgetConfig:', resultMap.successWidgetConfig);
+        console.log('fetchMicroCommunityDataFromAndroidSDK, successHomeFeed:', resultMap.successHomeFeed);
+
+        if (resultMap && resultMap.successWidgetConfig) {
+          setWidgetResponse(JSON.parse(resultMap.successWidgetConfig));
+          console.log('fetchMicroCommunityDataFromAndroidSDK, widgetResponse:', widgetResponse);
+          const creatorEnabled = widgetResponse?.result.creatorEnabled;
+          const LeaderBoardEnabled =
+            widgetResponse?.result?.challengeInfo?.leaderboardEnabled;
+          const challangeInfoData =
+            widgetResponse?.result?.challengeInfo ?? null;
+
+          setChallangeInfo(challangeInfoData);
+          setButtonLabel(challangeInfoData?.title ?? "");
+          setIsCreatorVisible(creatorEnabled ?? false); // Set state for button visibility
+          setIsLeaderBoardVisible(LeaderBoardEnabled ?? false);
+
+          const rewardEnabled = await NavigationModule.fetchRewardStatus();
+          setIsRewardVisible(rewardEnabled);
+
+          if (widgetResponse?.result?.widgetEnabled == true) {
+            const feedModelResponse = JSON.parse(resultMap.successHomeFeed).result;
+            if (feedModelResponse.length > 0) {
+              setWidgetData(feedModelResponse);
+            }
+          } else {
+            console.error('widgetEnabled is false or not available:', "false");
+          }
         }
-      },
-    );
-  }, []);
+
+
+      } else {
+        console.error('GluedIn Android SDK Init Failed');
+      }
+    } catch (error) {
+      console.error('Error from native module:', error);
+    }
+  };
 
   const getUserData = async (key: string) => {
     try {
@@ -117,81 +185,192 @@ const ProductDetailScreen = ({navigation}: any) => {
   };
 
   const onCallSubFeed = async (item: any) => {
-    GluedInBridge.launchSDKFromMicrocommunity(
-      Config.ASSET_ID,
-      Config.ASSET_NAME,
-      Config.ASSET_DISCOUNT_PRICE,
-      Config.ASSET_IMAGE_URL,
-      Config.ASSET_DISCOUNT_END_DATE,
-      Config.ASSET_DISCOUNT_START_DATE,
-      Config.ASSET_IMAGE_URL,
-      Config.ASSET_MRP,
-      Config.ASSET_SHOPPABLE_LINK,
-      Config.ASSET_CURRENCY_SYMBOL,
-      item.topicId,
-      (error: any, result: any) => {
-        if (error) {
-          console.log('onCallSubFeed result', error);
-        } else {
-          console.log('onCallSubFeed result', result);
-        }
-      },
-    );
+    if (Platform.OS === 'ios') {
+      GluedInBridge.launchSDKFromMicrocommunity(
+        Config.ASSET_ID,
+        Config.ASSET_NAME,
+        Config.ASSET_DISCOUNT_PRICE,
+        Config.ASSET_IMAGE_URL,
+        Config.ASSET_DISCOUNT_END_DATE,
+        Config.ASSET_DISCOUNT_START_DATE,
+        Config.ASSET_IMAGE_URL,
+        Config.ASSET_MRP,
+        Config.ASSET_SHOPPABLE_LINK,
+        Config.ASSET_CURRENCY_SYMBOL,
+        item.topicId,
+        (error: any, result: any) => {
+          if (error) {
+            console.log('onCallSubFeed result', error);
+          } else {
+            console.log('onCallSubFeed result', result);
+          }
+        },
+      );
+    } else {
+      console.log('Failed to fetch data sdk called:', widgetResponse?.result);
+      NavigationModule.launchGluedInSDKForMicroCommunity(
+        Config.API_KEY,
+        Config.SECRET_KEY,
+        Config.BASE_URL,
+        Config.DEFAULT_EMAIl,
+        Config.DEFAULT_PASSWORD,
+        Config.DEFAULT_FULLNAME,
+        Config.DEFAULT_PROFILEPIC,
+        Config.ASSET_ID,
+        Config.ASSET_NAME,
+        Config.ASSET_DISCOUNT_PRICE,
+        Config.ASSET_IMAGE_URL,
+        Config.ASSET_DISCOUNT_END_DATE,
+        Config.ASSET_DISCOUNT_START_DATE,
+        Config.ASSET_MRP,
+        Config.ASSET_SHOPPABLE_LINK,
+        Config.ASSET_CURRENCY_SYMBOL,
+        item.topicId,
+        JSON.stringify(widgetResponse),
+        -1);
+    }
   };
 
   const onCallLeaderBoard = async () => {
-    GluedInBridge.launchSDKFromLeaderboard(
-      Config.ASSET_ID,
-      challangeInfo,
-      (error: any, result: any) => {
-        if (error) {
-          console.log('onCallSubFeed result', error);
-        } else {
-          console.log('onCallSubFeed result', result);
-        }
-      },
-    );
+    if (Platform.OS === 'ios') {
+      GluedInBridge.launchSDKFromLeaderboard(
+        Config.ASSET_ID,
+        challangeInfo,
+        (error: any, result: any) => {
+          if (error) {
+            console.log('onCallSubFeed result', error);
+          } else {
+            console.log('onCallSubFeed result', result);
+          }
+        },
+      );
+    } else {
+      console.log('onCallSubFeed result Android Leaderboard');
+      try {
+        NavigationModule.launchGluedInSDKForMicroCommunity(
+          Config.API_KEY,
+          Config.SECRET_KEY,
+          Config.BASE_URL,
+          Config.DEFAULT_EMAIl,
+          Config.DEFAULT_PASSWORD,
+          Config.DEFAULT_FULLNAME,
+          Config.DEFAULT_PROFILEPIC,
+          Config.ASSET_ID,
+          Config.ASSET_NAME,
+          Config.ASSET_DISCOUNT_PRICE,
+          Config.ASSET_IMAGE_URL,
+          Config.ASSET_DISCOUNT_END_DATE,
+          Config.ASSET_DISCOUNT_START_DATE,
+          Config.ASSET_MRP,
+          Config.ASSET_SHOPPABLE_LINK,
+          Config.ASSET_CURRENCY_SYMBOL,
+          "",
+          JSON.stringify(widgetResponse?.result),
+          1);
+
+      } catch (error) {
+        console.error('Error from native module:', error);
+      }
+    }
   };
 
   const onCallReward = async () => {
-    GluedInBridge.launchSDKFromReward(
-      Config.ASSET_ID,
-      challangeInfo,
-      (error: any, result: any) => {
-        if (error) {
-          console.log('onCallSubFeed result', error);
-        } else {
-          console.log('onCallSubFeed result', result);
-        }
-      },
-    );
+    if (Platform.OS === 'ios') {
+      GluedInBridge.launchSDKFromReward(
+        Config.ASSET_ID,
+        challangeInfo,
+        (error: any, result: any) => {
+          if (error) {
+            console.log('onCallSubFeed result', error);
+          } else {
+            console.log('onCallSubFeed result', result);
+          }
+        },
+      );
+    } else {
+      console.log('onCallSubFeed result Android reward');
+      try {
+        NavigationModule.launchGluedInSDKForMicroCommunity(
+          Config.API_KEY,
+          Config.SECRET_KEY,
+          Config.BASE_URL,
+          Config.DEFAULT_EMAIl,
+          Config.DEFAULT_PASSWORD,
+          Config.DEFAULT_FULLNAME,
+          Config.DEFAULT_PROFILEPIC,
+          Config.ASSET_ID,
+          Config.ASSET_NAME,
+          Config.ASSET_DISCOUNT_PRICE,
+          Config.ASSET_IMAGE_URL,
+          Config.ASSET_DISCOUNT_END_DATE,
+          Config.ASSET_DISCOUNT_START_DATE,
+          Config.ASSET_MRP,
+          Config.ASSET_SHOPPABLE_LINK,
+          Config.ASSET_CURRENCY_SYMBOL,
+          "",
+          JSON.stringify(widgetResponse?.result),
+          3);
+
+      } catch (error) {
+        console.error('Error from native module:', error);
+      }
+    }
   };
 
   const onCallCreator = async () => {
     console.log('microcomminity data ', widgetData[0]);
     console.log('microcomminity data length', widgetData.length);
-    var item: any = widgetData[0];
-    GluedInBridge.launchSDKWithCreator(
-      Config.ASSET_ID,
-      item.title,
-      12,
-      'https://assets.gluedin.io/hashtag/fileImage/hashtag_1736317874073.jpg',
-      '2025-07-24',
-      '2025-01-08',
-      'https://www.amazon.in/gp/buyagain/ref=pd_hp_d_atf_rp_1?ie=',
-      15,
-      'https://www.amazon.in/gp/buyagain/ref=pd_hp_d_atf_rp_1?ie=',
-      '$',
-      'newyearChallenge',
-      'false',
-      (error: any, result: any) => {
-        if (error) {
-          console.log('onCallSubFeed result', error);
-        } else {
-          console.log('onCallSubFeed result', result);
-        }
-      },
-    );
+    if (Platform.OS === 'ios') {
+      var item: any = widgetData[0];
+      GluedInBridge.launchSDKWithCreator(
+        Config.ASSET_ID,
+        item.title,
+        12,
+        'https://assets.gluedin.io/hashtag/fileImage/hashtag_1736317874073.jpg',
+        '2025-07-24',
+        '2025-01-08',
+        'https://www.amazon.in/gp/buyagain/ref=pd_hp_d_atf_rp_1?ie=',
+        15,
+        'https://www.amazon.in/gp/buyagain/ref=pd_hp_d_atf_rp_1?ie=',
+        '$',
+        'newyearChallenge',
+        'false',
+        (error: any, result: any) => {
+          if (error) {
+            console.log('onCallSubFeed result', error);
+          } else {
+            console.log('onCallSubFeed result', result);
+          }
+        },
+      );
+    } else {
+      console.log('onCallSubFeed result Android reward');
+      try {
+        NavigationModule.launchGluedInSDKForMicroCommunity(
+          Config.API_KEY,
+          Config.SECRET_KEY,
+          Config.BASE_URL,
+          Config.DEFAULT_EMAIl,
+          Config.DEFAULT_PASSWORD,
+          Config.DEFAULT_FULLNAME,
+          Config.DEFAULT_PROFILEPIC,
+          Config.ASSET_ID,
+          Config.ASSET_NAME,
+          Config.ASSET_DISCOUNT_PRICE,
+          Config.ASSET_IMAGE_URL,
+          Config.ASSET_DISCOUNT_END_DATE,
+          Config.ASSET_DISCOUNT_START_DATE,
+          Config.ASSET_MRP,
+          Config.ASSET_SHOPPABLE_LINK,
+          Config.ASSET_CURRENCY_SYMBOL,
+          "",
+          JSON.stringify(widgetResponse?.result),
+          2);
+
+      } catch (error) {
+        console.error('Error from native module:', error);
+      }
+    }
   };
 
   const onGluedInLaunchPress = async () => {
@@ -215,7 +394,7 @@ const ProductDetailScreen = ({navigation}: any) => {
         } else {
           parsedData = data; // If not a string, assume it's already an object
         }
-        const {email, isLogin} = parsedData; // Destructure fields
+        const { email, isLogin } = parsedData; // Destructure fields
         GluedInBridge.launchSDK((error: any, result: any) => {
           if (error) {
             console.error('Error during launchSDK:', error);
@@ -254,15 +433,15 @@ const ProductDetailScreen = ({navigation}: any) => {
     };
   }, []);
 
-  const renderImageItem = ({item}: {item: any}) => (
-    <View style={{alignItems: 'center'}}>
-      <TouchableOpacity onPress={() => onCallSubFeed(item)}>
+  const renderImageItem = ({ item }: { item: any }) => (
+    <View style={{ alignItems: 'center' }}>
+      <Pressable onPress={() => onCallSubFeed(item)}>
         <Image
-          source={{uri: item.thumbnailUrl}}
+          source={{ uri: item.thumbnailUrl }}
           style={styles.widgetImage}
           resizeMode="cover"
         />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 
@@ -274,26 +453,26 @@ const ProductDetailScreen = ({navigation}: any) => {
     <SafeAreaView style={styles.container}>
       <ScrollView
         bounces={true}
-        contentContainerStyle={{paddingBottom: 13}}
+        contentContainerStyle={{ paddingBottom: 13 }}
         style={styles.detailContainer}>
         <View style={styles.content}>
           <View style={styles.videoContainer}>
-            <TouchableOpacity style={styles.playButton} onPress={handlePlay}>
+            <Pressable style={styles.playButton} onPress={handlePlay}>
               <Image
                 source={require('../../assets/images/play-circle.png')}
                 style={[styles.customIcon]}
                 resizeMode="contain"
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           {isCreatorVisible && (
-            <TouchableOpacity
+            <Pressable
               style={styles.participateButton}
               onPress={() => onCallCreator()}>
               <View style={styles.textContainer}>
                 <Text style={styles.participateButtonText}>
-                  Participate in #newyearChallenge
+                  Participate in #{buttonLabel}
                 </Text>
                 <Text style={styles.participateButtonText}>
                   Upload videos and earn reward points
@@ -303,7 +482,7 @@ const ProductDetailScreen = ({navigation}: any) => {
                 source={require('../../assets/images/camera.png')}
                 style={styles.participateImage}
               />
-            </TouchableOpacity>
+            </Pressable>
           )}
 
           <View style={styles.relatedContainer}>
@@ -324,7 +503,7 @@ const ProductDetailScreen = ({navigation}: any) => {
           </View>
 
           {isLeaderBoardVisible && (
-            <TouchableOpacity
+            <Pressable
               style={styles.buttonView}
               onPress={() => onCallLeaderBoard()}>
               <Text
@@ -337,11 +516,11 @@ const ProductDetailScreen = ({navigation}: any) => {
                 }}>
                 View Leaderboard
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           )}
 
           {isRewardVisible && (
-            <TouchableOpacity
+            <Pressable
               style={styles.buttonView}
               onPress={() => onCallReward()}>
               <Text
@@ -354,7 +533,7 @@ const ProductDetailScreen = ({navigation}: any) => {
                 }}>
                 View Rewards
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
       </ScrollView>
@@ -410,6 +589,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     marginBottom: 12,
     borderRadius: 6,
+    marginEnd: 8,
     width: 99,
     height: 176,
   },
