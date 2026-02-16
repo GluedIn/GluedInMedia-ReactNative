@@ -20,7 +20,10 @@ enable_user_defined_build_types!
 
 target 'GluedInMedia' do
 
- pod 'GluedInSDK', '5.3.2', :build_type => :dynamic_framework
+ pod 'GluedInSDK', '6.0.0', :build_type => :dynamic_framework
+ pod 'Google-Mobile-Ads-SDK'
+ pod 'Mobile-Buy-SDK', '2025.7.0'
+ pod 'ToastViewSwift'
 
 # pod 'GluedInSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInSDK/'
 # pod 'GluedInCoreSDK', :build_type => :dynamic_framework, :path => '/Users/ashish/Documents/Bitbucket/psaw_gin_iossdk_01/GluedInCoreSDK/'
@@ -50,7 +53,8 @@ target 'GluedInMedia' do
     
     minOSTargetVersion = 12.4
          dynamicFrameworks = {
-           'SkeletonView': 11.0,
+#           'Skelet3w3onView': 11.0,
+           'CropViewController': 12.0,
          }
 
          # Set deployment target for all pods to 13.4 by default

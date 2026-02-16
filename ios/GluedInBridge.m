@@ -12,6 +12,7 @@
 
 RCT_EXTERN_METHOD(launchSDK:(NSString *)apiKey
                   secretKey:(NSString *)secretKey
+                  baseUrl:(NSString *)baseUrl
                   email:(NSString *)email
                   password:(NSString *)password
                   fullName:(NSString *)fullName
@@ -29,6 +30,7 @@ RCT_EXTERN_METHOD(
                   feedRailData:(NSArray *)feedRailData
                   apiKey:(NSString *)apiKey
                   secretKey:(NSString *)secretKey
+                  baseUrl:(NSString *)baseUrl
                   email:(NSString *)email
                   password:(NSString *)password
                   fullName:(NSString *)fullName

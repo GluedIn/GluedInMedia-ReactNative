@@ -10,36 +10,88 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		283DB4FF2D7E8C5700FC5A13 /* ReactNativeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283DB4FE2D7E8C5700FC5A13 /* ReactNativeViewController.swift */; };
 		2840F4D72D7C2C6C00342D77 /* GluedInBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840F4D62D7C2C6C00342D77 /* GluedInBridge.swift */; };
-		2840F4D92D7C424100342D77 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840F4D82D7C424100342D77 /* Constant.swift */; };
 		2840F4DF2D7CD8FE00342D77 /* GluedInBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2840F4DE2D7CD8FE00342D77 /* GluedInBridge.m */; };
 		65A3FC660FFC4506B54E680B /* SF UI Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECF0720B277149D5B4208494 /* SF UI Display-Medium.ttf */; };
-		6E8138167EADD8A4144E7DD7 /* Pods_GluedInMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE6C12D4B83ECB3052B5A97 /* Pods_GluedInMedia.framework */; };
+		7578BEC32F3E1F62001FFC64 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEBF2F3E1F62001FFC64 /* ProductDetailViewController.swift */; };
+		7578BEC42F3E1F62001FFC64 /* AddToCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEBD2F3E1F62001FFC64 /* AddToCartViewController.swift */; };
+		7578BEC52F3E1F62001FFC64 /* AddToCartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEBB2F3E1F62001FFC64 /* AddToCartTableViewCell.swift */; };
+		7578BEC62F3E1F62001FFC64 /* ProductVariantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEC02F3E1F62001FFC64 /* ProductVariantCollectionViewCell.swift */; };
+		7578BEC72F3E1F62001FFC64 /* ProductVariantCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7578BEC12F3E1F62001FFC64 /* ProductVariantCollectionViewCell.xib */; };
+		7578BEC82F3E1F62001FFC64 /* ProductDetailStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7578BEBE2F3E1F62001FFC64 /* ProductDetailStoryboard.storyboard */; };
+		7578BEC92F3E1F62001FFC64 /* AddToCartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7578BEBC2F3E1F62001FFC64 /* AddToCartTableViewCell.xib */; };
+		7578BECA2F3E1F62001FFC64 /* AddToCartStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7578BEBA2F3E1F62001FFC64 /* AddToCartStoryboard.storyboard */; };
+		7578BECC2F3E24D3001FFC64 /* GluedInGlobal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BECB2F3E24D3001FFC64 /* GluedInGlobal.swift */; };
+		7578BED62F3EEB60001FFC64 /* NativeAdVerticalView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7578BED32F3EEB60001FFC64 /* NativeAdVerticalView.storyboard */; };
+		7578BED72F3EEB60001FFC64 /* NativeAdVerticalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BED42F3EEB60001FFC64 /* NativeAdVerticalViewController.swift */; };
+		7578BED82F3EEB60001FFC64 /* GADNativeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BED22F3EEB60001FFC64 /* GADNativeManager.swift */; };
+		7578BED92F3EEB60001FFC64 /* GADBannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BECD2F3EEB60001FFC64 /* GADBannerManager.swift */; };
+		7578BEDA2F3EEB60001FFC64 /* GADRewardedInterstitialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BED02F3EEB60001FFC64 /* GADRewardedInterstitialManager.swift */; };
+		7578BEDB2F3EEB60001FFC64 /* GADInterstitialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BECF2F3EEB60001FFC64 /* GADInterstitialManager.swift */; };
+		7578BEE02F3EF376001FFC64 /* GluedInAppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEDF2F3EF376001FFC64 /* GluedInAppColor.swift */; };
+		7578BEE22F3EF3E3001FFC64 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEE12F3EF3E3001FFC64 /* Global.swift */; };
+		7578BEE42F3EF4B7001FFC64 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEE32F3EF4B7001FFC64 /* Constant.swift */; };
+		7578BEE72F3EF563001FFC64 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEE62F3EF563001FFC64 /* String+Extension.swift */; };
+		7578BEE92F3EF5C6001FFC64 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEE82F3EF5C6001FFC64 /* ToastManager.swift */; };
+		7578BEED2F3EF8CC001FFC64 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEEB2F3EF8CB001FFC64 /* WebViewController.swift */; };
+		7578BEEE2F3EF8CC001FFC64 /* WebStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7578BEEA2F3EF8CB001FFC64 /* WebStoryboard.storyboard */; };
+		7578BEF02F3EFD3E001FFC64 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEEF2F3EFD3E001FFC64 /* Alert.swift */; };
+		7578BEF42F3F09AD001FFC64 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578BEF32F3F09AD001FFC64 /* IAPManager.swift */; };
+		7578BEF72F3F0AE8001FFC64 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7578BEF52F3F0AE8001FFC64 /* Localizable.strings */; };
+		7578BEF92F3F10C9001FFC64 /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 7578BEF82F3F10C9001FFC64 /* Configuration.storekit */; };
+		757F0A192F3F45D000CF9E9F /* StoreKitTestCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 757F0A182F3F45D000CF9E9F /* StoreKitTestCertificate.cer */; };
 		75CC9C13E89C4D179EF0DF69 /* SF UI Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 234F069E26D443DCACA0F352 /* SF UI Display-Bold.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D025E3BFC5261DD35FB5929A /* Pods_GluedInMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF8BE7E5E3F4F5EA9F36EEE7 /* Pods_GluedInMedia.framework */; };
 		D31CDEDCE1AD470CB6A017B7 /* SF UI Display-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 659E8AC355E54145A73CBEF6 /* SF UI Display-Semibold.ttf */; };
 		DB81C5B76AEA08B80F9231CE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		F5AA5E5FF36A4CC29E60A922 /* SF UI Display-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5179E0ECF8174505A51EF570 /* SF UI Display-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1233A12FEBC943FBABDBB043 /* Pods-GluedInMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GluedInMedia.release.xcconfig"; path = "Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* GluedInMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GluedInMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = GluedInMedia/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = GluedInMedia/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = GluedInMedia/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		234F069E26D443DCACA0F352 /* SF UI Display-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Bold.ttf"; path = "../assets/fonts/SF UI Display-Bold.ttf"; sourceTree = "<group>"; };
+		234F069E26D443DCACA0F352 /* SF UI Display-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Bold.ttf"; path = "../assets/fonts/SF UI Display-Bold.ttf"; sourceTree = "<group>"; };
 		283DB4FE2D7E8C5700FC5A13 /* ReactNativeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeViewController.swift; sourceTree = "<group>"; };
 		2840F4D62D7C2C6C00342D77 /* GluedInBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluedInBridge.swift; sourceTree = "<group>"; };
-		2840F4D82D7C424100342D77 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		2840F4DE2D7CD8FE00342D77 /* GluedInBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GluedInBridge.m; sourceTree = "<group>"; };
-		4CE6C12D4B83ECB3052B5A97 /* Pods_GluedInMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GluedInMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5179E0ECF8174505A51EF570 /* SF UI Display-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Regular.ttf"; path = "../assets/fonts/SF UI Display-Regular.ttf"; sourceTree = "<group>"; };
-		659E8AC355E54145A73CBEF6 /* SF UI Display-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Semibold.ttf"; path = "../assets/fonts/SF UI Display-Semibold.ttf"; sourceTree = "<group>"; };
+		5179E0ECF8174505A51EF570 /* SF UI Display-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Regular.ttf"; path = "../assets/fonts/SF UI Display-Regular.ttf"; sourceTree = "<group>"; };
+		659E8AC355E54145A73CBEF6 /* SF UI Display-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Semibold.ttf"; path = "../assets/fonts/SF UI Display-Semibold.ttf"; sourceTree = "<group>"; };
+		7578BEBA2F3E1F62001FFC64 /* AddToCartStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddToCartStoryboard.storyboard; sourceTree = "<group>"; };
+		7578BEBB2F3E1F62001FFC64 /* AddToCartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToCartTableViewCell.swift; sourceTree = "<group>"; };
+		7578BEBC2F3E1F62001FFC64 /* AddToCartTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddToCartTableViewCell.xib; sourceTree = "<group>"; };
+		7578BEBD2F3E1F62001FFC64 /* AddToCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToCartViewController.swift; sourceTree = "<group>"; };
+		7578BEBE2F3E1F62001FFC64 /* ProductDetailStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ProductDetailStoryboard.storyboard; sourceTree = "<group>"; };
+		7578BEBF2F3E1F62001FFC64 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		7578BEC02F3E1F62001FFC64 /* ProductVariantCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVariantCollectionViewCell.swift; sourceTree = "<group>"; };
+		7578BEC12F3E1F62001FFC64 /* ProductVariantCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductVariantCollectionViewCell.xib; sourceTree = "<group>"; };
+		7578BECB2F3E24D3001FFC64 /* GluedInGlobal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluedInGlobal.swift; sourceTree = "<group>"; };
+		7578BECD2F3EEB60001FFC64 /* GADBannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GADBannerManager.swift; sourceTree = "<group>"; };
+		7578BECF2F3EEB60001FFC64 /* GADInterstitialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GADInterstitialManager.swift; sourceTree = "<group>"; };
+		7578BED02F3EEB60001FFC64 /* GADRewardedInterstitialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GADRewardedInterstitialManager.swift; sourceTree = "<group>"; };
+		7578BED22F3EEB60001FFC64 /* GADNativeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GADNativeManager.swift; sourceTree = "<group>"; };
+		7578BED32F3EEB60001FFC64 /* NativeAdVerticalView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NativeAdVerticalView.storyboard; sourceTree = "<group>"; };
+		7578BED42F3EEB60001FFC64 /* NativeAdVerticalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdVerticalViewController.swift; sourceTree = "<group>"; };
+		7578BEDF2F3EF376001FFC64 /* GluedInAppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluedInAppColor.swift; sourceTree = "<group>"; };
+		7578BEE12F3EF3E3001FFC64 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		7578BEE32F3EF4B7001FFC64 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		7578BEE62F3EF563001FFC64 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		7578BEE82F3EF5C6001FFC64 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
+		7578BEEA2F3EF8CB001FFC64 /* WebStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WebStoryboard.storyboard; sourceTree = "<group>"; };
+		7578BEEB2F3EF8CB001FFC64 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		7578BEEF2F3EFD3E001FFC64 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		7578BEF32F3F09AD001FFC64 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
+		7578BEF62F3F0AE8001FFC64 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7578BEF82F3F10C9001FFC64 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
+		757F0A182F3F45D000CF9E9F /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = StoreKitTestCertificate.cer; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = GluedInMedia/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = GluedInMedia/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		92F331FD51254F49BB3C4BE1 /* Pods-GluedInMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GluedInMedia.release.xcconfig"; path = "Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia.release.xcconfig"; sourceTree = "<group>"; };
-		AD109C5B7E4BD7293E0C83DA /* Pods-GluedInMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GluedInMedia.debug.xcconfig"; path = "Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia.debug.xcconfig"; sourceTree = "<group>"; };
-		ECF0720B277149D5B4208494 /* SF UI Display-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Medium.ttf"; path = "../assets/fonts/SF UI Display-Medium.ttf"; sourceTree = "<group>"; };
+		B9C9887F0C67E17F91B614C6 /* Pods-GluedInMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GluedInMedia.debug.xcconfig"; path = "Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia.debug.xcconfig"; sourceTree = "<group>"; };
+		DF8BE7E5E3F4F5EA9F36EEE7 /* Pods_GluedInMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GluedInMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECF0720B277149D5B4208494 /* SF UI Display-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF UI Display-Medium.ttf"; path = "../assets/fonts/SF UI Display-Medium.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -48,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E8138167EADD8A4144E7DD7 /* Pods_GluedInMedia.framework in Frameworks */,
+				D025E3BFC5261DD35FB5929A /* Pods_GluedInMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +110,12 @@
 		13B07FAE1A68108700A75B9A /* GluedInMedia */ = {
 			isa = PBXGroup;
 			children = (
+				757F0A182F3F45D000CF9E9F /* StoreKitTestCertificate.cer */,
+				7578BEF22F3F0996001FFC64 /* IAPManager */,
+				7578BEEC2F3EF8CB001FFC64 /* WebView */,
+				7578BEDC2F3EF2E8001FFC64 /* Helper */,
+				7578BEC22F3E1F62001FFC64 /* ProductCart */,
+				7578BEB32F3E1F2E001FFC64 /* Ads */,
 				2840F4DE2D7CD8FE00342D77 /* GluedInBridge.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
@@ -65,8 +123,9 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				2840F4D62D7C2C6C00342D77 /* GluedInBridge.swift */,
-				2840F4D82D7C424100342D77 /* Constant.swift */,
 				283DB4FE2D7E8C5700FC5A13 /* ReactNativeViewController.swift */,
+				7578BEF52F3F0AE8001FFC64 /* Localizable.strings */,
+				7578BEF82F3F10C9001FFC64 /* Configuration.storekit */,
 			);
 			name = GluedInMedia;
 			sourceTree = "<group>";
@@ -80,16 +139,106 @@
 				659E8AC355E54145A73CBEF6 /* SF UI Display-Semibold.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				4CE6C12D4B83ECB3052B5A97 /* Pods_GluedInMedia.framework */,
+				DF8BE7E5E3F4F5EA9F36EEE7 /* Pods_GluedInMedia.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7578BEB32F3E1F2E001FFC64 /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				7578BECE2F3EEB60001FFC64 /* BannerManager */,
+				7578BED12F3EEB60001FFC64 /* InterstitialManager */,
+				7578BED52F3EEB60001FFC64 /* NativeAdVerticalView */,
+			);
+			path = Ads;
+			sourceTree = "<group>";
+		};
+		7578BEC22F3E1F62001FFC64 /* ProductCart */ = {
+			isa = PBXGroup;
+			children = (
+				7578BEBA2F3E1F62001FFC64 /* AddToCartStoryboard.storyboard */,
+				7578BEBB2F3E1F62001FFC64 /* AddToCartTableViewCell.swift */,
+				7578BEBC2F3E1F62001FFC64 /* AddToCartTableViewCell.xib */,
+				7578BEBD2F3E1F62001FFC64 /* AddToCartViewController.swift */,
+				7578BEBE2F3E1F62001FFC64 /* ProductDetailStoryboard.storyboard */,
+				7578BEBF2F3E1F62001FFC64 /* ProductDetailViewController.swift */,
+				7578BEC02F3E1F62001FFC64 /* ProductVariantCollectionViewCell.swift */,
+				7578BEC12F3E1F62001FFC64 /* ProductVariantCollectionViewCell.xib */,
+			);
+			path = ProductCart;
+			sourceTree = "<group>";
+		};
+		7578BECE2F3EEB60001FFC64 /* BannerManager */ = {
+			isa = PBXGroup;
+			children = (
+				7578BECD2F3EEB60001FFC64 /* GADBannerManager.swift */,
+			);
+			path = BannerManager;
+			sourceTree = "<group>";
+		};
+		7578BED12F3EEB60001FFC64 /* InterstitialManager */ = {
+			isa = PBXGroup;
+			children = (
+				7578BECF2F3EEB60001FFC64 /* GADInterstitialManager.swift */,
+				7578BED02F3EEB60001FFC64 /* GADRewardedInterstitialManager.swift */,
+			);
+			path = InterstitialManager;
+			sourceTree = "<group>";
+		};
+		7578BED52F3EEB60001FFC64 /* NativeAdVerticalView */ = {
+			isa = PBXGroup;
+			children = (
+				7578BED22F3EEB60001FFC64 /* GADNativeManager.swift */,
+				7578BED32F3EEB60001FFC64 /* NativeAdVerticalView.storyboard */,
+				7578BED42F3EEB60001FFC64 /* NativeAdVerticalViewController.swift */,
+			);
+			path = NativeAdVerticalView;
+			sourceTree = "<group>";
+		};
+		7578BEDC2F3EF2E8001FFC64 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				7578BEEF2F3EFD3E001FFC64 /* Alert.swift */,
+				7578BEE82F3EF5C6001FFC64 /* ToastManager.swift */,
+				7578BEE52F3EF549001FFC64 /* Extension */,
+				7578BEE12F3EF3E3001FFC64 /* Global.swift */,
+				7578BEDF2F3EF376001FFC64 /* GluedInAppColor.swift */,
+				7578BECB2F3E24D3001FFC64 /* GluedInGlobal.swift */,
+				7578BEE32F3EF4B7001FFC64 /* Constant.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		7578BEE52F3EF549001FFC64 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				7578BEE62F3EF563001FFC64 /* String+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		7578BEEC2F3EF8CB001FFC64 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				7578BEEA2F3EF8CB001FFC64 /* WebStoryboard.storyboard */,
+				7578BEEB2F3EF8CB001FFC64 /* WebViewController.swift */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
+		7578BEF22F3F0996001FFC64 /* IAPManager */ = {
+			isa = PBXGroup;
+			children = (
+				7578BEF32F3F09AD001FFC64 /* IAPManager.swift */,
+			);
+			path = IAPManager;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -125,8 +274,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AD109C5B7E4BD7293E0C83DA /* Pods-GluedInMedia.debug.xcconfig */,
-				92F331FD51254F49BB3C4BE1 /* Pods-GluedInMedia.release.xcconfig */,
+				B9C9887F0C67E17F91B614C6 /* Pods-GluedInMedia.debug.xcconfig */,
+				1233A12FEBC943FBABDBB043 /* Pods-GluedInMedia.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -138,13 +287,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "GluedInMedia" */;
 			buildPhases = (
-				9A8EFC8EBE4E84F671F48CFA /* [CP] Check Pods Manifest.lock */,
+				41FB7B1A3D29A844A5CD2E46 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				35CEC54B4DA17CF25C150B85 /* [CP] Embed Pods Frameworks */,
-				112FEC8A774F6EA2DC43947C /* [CP] Copy Pods Resources */,
+				50E0BA2ACC44D2BF28B3A174 /* [CP] Embed Pods Frameworks */,
+				4A1CB257FB75BAA963BE7933 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -192,11 +341,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				7578BEF92F3F10C9001FFC64 /* Configuration.storekit in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DB81C5B76AEA08B80F9231CE /* PrivacyInfo.xcprivacy in Resources */,
+				7578BEF72F3F0AE8001FFC64 /* Localizable.strings in Resources */,
 				75CC9C13E89C4D179EF0DF69 /* SF UI Display-Bold.ttf in Resources */,
 				65A3FC660FFC4506B54E680B /* SF UI Display-Medium.ttf in Resources */,
 				F5AA5E5FF36A4CC29E60A922 /* SF UI Display-Regular.ttf in Resources */,
+				7578BEEE2F3EF8CC001FFC64 /* WebStoryboard.storyboard in Resources */,
+				7578BEC72F3E1F62001FFC64 /* ProductVariantCollectionViewCell.xib in Resources */,
+				7578BED62F3EEB60001FFC64 /* NativeAdVerticalView.storyboard in Resources */,
+				757F0A192F3F45D000CF9E9F /* StoreKitTestCertificate.cer in Resources */,
+				7578BEC82F3E1F62001FFC64 /* ProductDetailStoryboard.storyboard in Resources */,
+				7578BEC92F3E1F62001FFC64 /* AddToCartTableViewCell.xib in Resources */,
+				7578BECA2F3E1F62001FFC64 /* AddToCartStoryboard.storyboard in Resources */,
 				D31CDEDCE1AD470CB6A017B7 /* SF UI Display-Semibold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,41 +378,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		112FEC8A774F6EA2DC43947C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		35CEC54B4DA17CF25C150B85 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9A8EFC8EBE4E84F671F48CFA /* [CP] Check Pods Manifest.lock */ = {
+		41FB7B1A3D29A844A5CD2E46 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -276,6 +400,40 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4A1CB257FB75BAA963BE7933 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		50E0BA2ACC44D2BF28B3A174 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GluedInMedia/Pods-GluedInMedia-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -285,18 +443,46 @@
 			files = (
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
 				283DB4FF2D7E8C5700FC5A13 /* ReactNativeViewController.swift in Sources */,
+				7578BEF42F3F09AD001FFC64 /* IAPManager.swift in Sources */,
 				2840F4D72D7C2C6C00342D77 /* GluedInBridge.swift in Sources */,
-				2840F4D92D7C424100342D77 /* Constant.swift in Sources */,
+				7578BEED2F3EF8CC001FFC64 /* WebViewController.swift in Sources */,
 				2840F4DF2D7CD8FE00342D77 /* GluedInBridge.m in Sources */,
+				7578BED72F3EEB60001FFC64 /* NativeAdVerticalViewController.swift in Sources */,
+				7578BEF02F3EFD3E001FFC64 /* Alert.swift in Sources */,
+				7578BED82F3EEB60001FFC64 /* GADNativeManager.swift in Sources */,
+				7578BED92F3EEB60001FFC64 /* GADBannerManager.swift in Sources */,
+				7578BEE02F3EF376001FFC64 /* GluedInAppColor.swift in Sources */,
+				7578BEDA2F3EEB60001FFC64 /* GADRewardedInterstitialManager.swift in Sources */,
+				7578BEE92F3EF5C6001FFC64 /* ToastManager.swift in Sources */,
+				7578BEDB2F3EEB60001FFC64 /* GADInterstitialManager.swift in Sources */,
+				7578BEE72F3EF563001FFC64 /* String+Extension.swift in Sources */,
+				7578BEE42F3EF4B7001FFC64 /* Constant.swift in Sources */,
+				7578BEC32F3E1F62001FFC64 /* ProductDetailViewController.swift in Sources */,
+				7578BEC42F3E1F62001FFC64 /* AddToCartViewController.swift in Sources */,
+				7578BECC2F3E24D3001FFC64 /* GluedInGlobal.swift in Sources */,
+				7578BEC52F3E1F62001FFC64 /* AddToCartTableViewCell.swift in Sources */,
+				7578BEC62F3E1F62001FFC64 /* ProductVariantCollectionViewCell.swift in Sources */,
+				7578BEE22F3EF3E3001FFC64 /* Global.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		7578BEF52F3F0AE8001FFC64 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7578BEF62F3F0AE8001FFC64 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD109C5B7E4BD7293E0C83DA /* Pods-GluedInMedia.debug.xcconfig */;
+			baseConfigurationReference = B9C9887F0C67E17F91B614C6 /* Pods-GluedInMedia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -305,7 +491,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = GluedInMedia/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = GluedInMedia;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,7 +514,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92F331FD51254F49BB3C4BE1 /* Pods-GluedInMedia.release.xcconfig */;
+			baseConfigurationReference = 1233A12FEBC943FBABDBB043 /* Pods-GluedInMedia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -336,7 +522,7 @@
 				DEVELOPMENT_TEAM = 5FZ3RL65RL;
 				INFOPLIST_FILE = GluedInMedia/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = GluedInMedia;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

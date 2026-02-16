@@ -11,12 +11,25 @@ internal import GluedInSDK
 internal import GluedInCoreSDK
 internal import GluedInCreatorSDK
 internal import GluedInFeedSDK
+import StoreKit
 import UIKit
+import GoogleMobileAds
 
 //@objc(GluedInBridge)
 @objc(GluedInBridge) // ✅ Ensure this annotation is present
 
 class GluedInBridge: RCTEventEmitter {
+  
+  var seriesId: String?
+  var assetId: String?
+  var packageId: String?
+  var skuId: String?
+  var paymentUrl: String?
+  var userId: String?
+  var paymentType: PaymentMethod = .inAppPurchase
+  
+  var gadNativeAd: NativeAd?
+  var gadCustomNativeAd: CustomNativeAd?
   
   //MARK: - Supported events for callback-
   override func supportedEvents() -> [String]! {
@@ -49,6 +62,7 @@ class GluedInBridge: RCTEventEmitter {
     GluedIn.shared.initWithUserInfo(
       apiKey: apiKey,
       secretKey: secretKey,
+      baseURL: "https://stag-v2-api.gluedin.io",
       email: email,
       password: password,
       fullName: fullName,
@@ -130,15 +144,15 @@ class GluedInBridge: RCTEventEmitter {
       currencySymbol: currencySymbol
     )
     GluedIn.shared.launchSDK(
-        typeOfEntry: .subFeed,
-        assets: item,
-        challenge: nil,
-        contextType: .asset,
-        contextId: assetId,
-        selectedContentId: contextId,
-        challengeInfo: nil,
-        isRewardCallback: false,
-        delegate: self
+      typeOfEntry: .subFeed,
+      assets: item,
+      challenge: nil,
+      contextType: .asset,
+      contextId: assetId,
+      selectedContentId: contextId,
+      challengeInfo: nil,
+      isRewardCallback: false,
+      delegate: self
     ) { [weak self] controller in
       guard let self = self else { return }
       guard let viewController = controller else { return }
@@ -169,7 +183,7 @@ class GluedInBridge: RCTEventEmitter {
       print(error)
     }
   }
-
+  
   @objc
   func launchSDKFromReward(
     _ assetId: String,
@@ -242,6 +256,7 @@ class GluedInBridge: RCTEventEmitter {
   func launchSDK(
     _ apiKey: String,
     secretKey: String,
+    baseUrl: String,
     email: String,
     password: String,
     fullName: String,
@@ -251,6 +266,9 @@ class GluedInBridge: RCTEventEmitter {
     GluedIn.shared.initSdk(apiKey: apiKey, secretKey: secretKey) { [weak self] in
       guard let self = self else { return }
       self.launchGluedIn(
+        api: apiKey,
+        secret: secretKey,
+        baseUrl: baseUrl,
         email: email,
         password: password,
         fullName: fullName,
@@ -300,7 +318,7 @@ class GluedInBridge: RCTEventEmitter {
       print("none")
     }
   }
-    
+  
   //MARK: - SubFeed from the Rail list with selected Item -
   @objc func userDidTapOnFeed(
     _ index: Int,
@@ -309,6 +327,7 @@ class GluedInBridge: RCTEventEmitter {
     feedRailData: [NSDictionary],
     apiKey: String,
     secretKey: String,
+    baseUrl: String,
     email: String,
     password: String,
     fullName: String,
@@ -323,6 +342,9 @@ class GluedInBridge: RCTEventEmitter {
           return
         }
         self.launchGluedIn(
+          api: apiKey,
+          secret: secretKey,
+          baseUrl: baseUrl,
           email: email,
           password: password,
           fullName: fullName,
@@ -339,6 +361,9 @@ class GluedInBridge: RCTEventEmitter {
         let videoId = index < itemIds.count ? itemIds[index] : nil
         
         self.launchGluedIn(
+          api: apiKey,
+          secret: secretKey,
+          baseUrl: baseUrl,
           email: email,
           password: password,
           fullName: fullName,
@@ -375,6 +400,9 @@ class GluedInBridge: RCTEventEmitter {
   }
   
   private func launchGluedIn(
+    api: String,
+    secret: String,
+    baseUrl: String,
     email: String,
     password: String,
     fullName: String,
@@ -385,34 +413,65 @@ class GluedInBridge: RCTEventEmitter {
     onlyShortsSubFeed: Bool,
     callback: @escaping RCTResponseSenderBlock
   ) {
-    GluedIn.shared.quickLaunch(
-      email: email,
-      password: password,
-      firebaseToken: "",
-      fullName: fullName,
-      autoCreate: true,
-      termConditionAccepted: true,
-      userType: "",
-      personaType: persona,
-      adsParameter: nil,
-      selectedRailContentId: selectedRailContentId,
-      railContentIds: railContentIds,
-      onlyShortsSubFeed: onlyShortsSubFeed,
-      delegate: self,
-      seriesId: seriesId,
-      selectedEpisodeNumber: nil
-    ) { [weak self] controller in
-      guard let self = self else { return }
+    let builder = GluedInLaunchBuilder()
+      .setApiAndSecret(api, secret)
+      .setUserInfo(
+        email: email,
+        password: password,
+        fullName: fullName.isEmpty ? "" : fullName,
+        profilePhoto: "")
+      .setDelegate(self)
+      .setUserPersona(persona)
+      .setAutoCreate(!fullName.isEmpty)
+      .setFeedType(.vertical)
+      .setDarkTheme(true)
+      .setApiServerUrl(baseUrl)
+      .setCarouselDetails(selectedRailContentId: selectedRailContentId, railContentIds: railContentIds, onlyShortsSubFeed: onlyShortsSubFeed, entryPoint: .none)
+      .setSeriesInfo(seriesId: seriesId, selectedEpisodeNumber: nil, onlyShortsSubFeed: onlyShortsSubFeed)
+      .build()
+    builder.launch { controller in
       if let vc = controller {
         self.present(vc)
         callback([NSNull(), ["status": "success"]])
       } else {
         callback(["Launch controller is nil", NSNull()])
       }
-    } failure: { error, code in
+    } authenticationfailure: { error, code in
+      Debug.Log(message: error)
+      callback([error, NSNull()])
+    } sdkInitializationFailure: { error, code in
       Debug.Log(message: error)
       callback([error, NSNull()])
     }
+    
+//    GluedIn.shared.quickLaunch(
+//      email: email,
+//      password: password,
+//      firebaseToken: "",
+//      fullName: fullName,
+//      autoCreate: true,
+//      termConditionAccepted: true,
+//      userType: "",
+//      personaType: persona,
+//      adsParameter: nil,
+//      selectedRailContentId: selectedRailContentId,
+//      railContentIds: railContentIds,
+//      onlyShortsSubFeed: onlyShortsSubFeed,
+//      delegate: self,
+//      seriesId: seriesId,
+//      selectedEpisodeNumber: nil
+//    ) { [weak self] controller in
+//      guard let self = self else { return }
+//      if let vc = controller {
+//        self.present(vc)
+//        callback([NSNull(), ["status": "success"]])
+//      } else {
+//        callback(["Launch controller is nil", NSNull()])
+//      }
+//    } failure: { error, code in
+//      Debug.Log(message: error)
+//      callback([error, NSNull()])
+//    }
   }
   
   //MARK: - Fetch curated rails-
@@ -493,31 +552,31 @@ class GluedInBridge: RCTEventEmitter {
       completion(false,error)
     }
   }
-    
+  
   func launchSDKAsGuest(completion: @escaping ((_ isSuccess: Bool, _ errorMessage: String) -> Void)) {
-      if let controller = GluedIn.shared.rootControllerWithSignIn(
-          userType: "SVOD",
-          adsParameter: nil,
-          delegate: self) {
-          
-        DispatchQueue.main.async {
-          guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-          }
-          if let navVC = appDelegate.window.rootViewController as? UINavigationController{
-            navVC.pushViewController(controller, animated: true)
-          }
-          else if let navVC = appDelegate.window.rootViewController{
-            let nvController = UINavigationController(rootViewController:  controller)
-            //navVC.present(nvController, animated: true)
-            nvController.modalPresentationStyle = .fullScreen // Ensure full-screen presentation
-            navVC.present(nvController, animated: true)
-          }
-          completion(true, "")
+    if let controller = GluedIn.shared.rootControllerWithSignIn(
+      userType: "SVOD",
+      adsParameter: nil,
+      delegate: self) {
+      
+      DispatchQueue.main.async {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+          return
         }
-      } else {
-          completion(false, "Failed to get controller from GluedIn SDK")
+        if let navVC = appDelegate.window.rootViewController as? UINavigationController{
+          navVC.pushViewController(controller, animated: true)
+        }
+        else if let navVC = appDelegate.window.rootViewController{
+          let nvController = UINavigationController(rootViewController:  controller)
+          //navVC.present(nvController, animated: true)
+          nvController.modalPresentationStyle = .fullScreen // Ensure full-screen presentation
+          navVC.present(nvController, animated: true)
+        }
+        completion(true, "")
       }
+    } else {
+      completion(false, "Failed to get controller from GluedIn SDK")
+    }
   }
   
   //MARK: - get top controller -
@@ -548,33 +607,398 @@ extension GluedInBridge: CreatorProtocol {
 }
 
 //MARK: - Extension -
-extension GluedInBridge : GluedInDelegate{
+extension GluedInBridge : GluedInDelegate,
+                          WebViewControllerDelegate,
+                          ProductDetailViewDelegate,
+                          AddToCartDelegate {
+  
+  func showAutoRenewalSubscribtion(viewController: UIViewController?) {
+    if #available(iOS 15.0, *) {
+      // ✅ Apple native subscription screen
+      if let scene = viewController?.view.window?.windowScene {
+        Task { @MainActor in
+          do {
+            try await AppStore.showManageSubscriptions(in: scene)
+          } catch {
+            // Fallback if Apple API fails
+            openSubscriptionsURL()
+          }
+        }
+      } else {
+        openSubscriptionsURL()
+      }
+    } else {
+      // ❌ iOS 12–14: URL is the ONLY option
+      openSubscriptionsURL()
+    }
+  }
+  
+  func openSubscriptionsURL() {
+    guard let url = URL(string: "https://apps.apple.com/account/subscriptions") else { return }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  }
+  
+  
+  func onInitiateSeriesPurchase(
+    paymentType: PaymentMethod,
+    inAppSkuId: String?,
+    purchaseUrl: String?,
+    seriesId: String?,
+    packageId: String?,
+    episodeNumber: Int?,
+    userId: String?,
+    controller: UIViewController?
+  ) {
+    self.userId = userId
+    self.seriesId = seriesId
+    self.skuId = inAppSkuId
+    self.paymentUrl = purchaseUrl
+    self.paymentType = paymentType
+    self.packageId = packageId
+    
+    switch paymentType {
+      
+    case .inAppPurchase, .inAppPurchaseSubscription:
+      guard let id = skuId, !id.isEmpty else { return }
+      guard SKPaymentQueue.canMakePayments() else {
+        GluedIn.shared.notifyPaymentResult(
+          status: .paymentFailed,
+          transactionId: nil,
+          seriesId: seriesId,
+          skuId: skuId,
+          paymenyUrl: paymentUrl,
+          packageId: packageId,
+          paymentType: paymentType
+        )
+        return
+      }
+      
+      if #available(iOS 15.0, *) {
+        startObservingStoreKit2IfNeeded()
+        purchaseStoreKit2(productId: id, userId: userId)
+      } else {
+        // ✅ existing SK1 flow
+        let set: Set<String> = [id]
+        let productsRequest = SKProductsRequest(productIdentifiers: set)
+        productsRequest.delegate = self
+        productsRequest.start()
+      }
+      
+    case .paymentGateway:
+      if let urlString = paymentUrl {
+        ToastManager.shared.showToast(text: "onInitiateSeriesPurchase => Link - \(urlString)")
+      }
+      
+    case .subscription:
+      ToastManager.shared.showToast(
+        text: "\(#function) => seriesId - \(seriesId ?? "no series") Link - \(purchaseUrl ?? "no link")"
+      )
+    }
+  }
+  
+  func onFetchPrice(productIDs: [String]?, paymentType: GluedInCoreSDK.PaymentMethod, completion: @escaping (Any?) -> Void, onError: @escaping ((any Error)?) -> Void) {
+    guard let productIDs = productIDs, !productIDs.isEmpty else {
+        completion(nil)
+        return
+    }
+    switch paymentType {
+    case .inAppPurchase:
+        IAPManager.shared.fetchPrices(for: productIDs) { infos in
+            DispatchQueue.main.async { completion(infos) }
+        } onError: { err in
+            DispatchQueue.main.async { onError(err) }
+        }
+
+    case .inAppPurchaseSubscription:
+        IAPManager.shared.fetchSubscriptionInfos(for: productIDs) { infos in
+            DispatchQueue.main.async { completion(infos) }
+        } onError: { err in
+            DispatchQueue.main.async { onError(err) }
+        }
+
+    case .paymentGateway, .subscription:
+        completion(nil)
+    }
+  }
+  
+  func onRewardedAdRequested(
+    viewController: UIViewController?,
+    adsType: GluedInCoreSDK.AdsType,
+    adUnitID: String?,
+    customParmas: [GluedInCoreSDK.GAMExtraParams]?,
+    seriesId: String?
+  ) {
+    if let adId = adUnitID {
+      GluedIn.shared.logAds(type: .adMobRewardedInterstitial, status: .impression, error: nil, seriesId: seriesId, assetId: assetId)
+      GADRewardedInterstitialManager.shared.loadRewardedInterstitial(adUnitID: adId) { [weak self] didCompleted in
+        guard let weakSelf = self else { return }
+        if let controller = viewController {
+          weakSelf.seriesId = seriesId
+          weakSelf.assetId = adUnitID
+          weakSelf.showRewardInterstitialAds(view: controller)
+          GluedIn.shared.logAds(type: .adMobRewardedInterstitial, status: .completed, error: nil, seriesId: seriesId, assetId: adUnitID)
+        }
+      } didCompleteWithError: { didCompleteWithError in
+        GluedIn.shared.logAds(type: .adMobRewardedInterstitial, status: .failed, error: "\(didCompleteWithError)", seriesId: seriesId, assetId: "")
+      }
+    }
+  }
+  
+  func showRewardInterstitialAds(view: UIViewController) {
+    GADRewardedInterstitialManager.shared.showRewardedInterstitial(from: view) { [weak self] in
+      guard let self = self else { return }
+      GluedIn.shared.logAds(type: .adMobRewardedInterstitial, status: .showAds, error: nil, seriesId: seriesId, assetId: assetId)
+      
+    } didDismiss: { [weak self] in
+      guard let self = self else { return }
+      GluedIn.shared.logAds(type: .adMobRewardedInterstitial, status: .dismiss, error: nil, seriesId: self.seriesId, assetId: self.assetId)
+      
+    } didFailToPresent: { [weak self] didFailToPresentWithError in
+      guard let self = self else { return }
+      GluedIn.shared.logAds(type: .adMobRewardedInterstitial, status: .failed, error: "\(didFailToPresentWithError)", seriesId: seriesId, assetId: assetId)
+      
+    } earnReward: { [weak self] type, amount in
+      guard let self = self else { return }
+      GluedIn.shared.logAds(type: .adMobRewardedInterstitial, status: .earned, error: nil, seriesId: seriesId, assetId: assetId)
+    }
+  }
+  
+  func appViewClickEvent(device_ID: String, user_email: String, user_name: String, platform_name: String) {
+    
+  }
+  
+  func appLaunchEvent(deviceID: String, platformName: String) {
+    
+  }
+  
+  func onWatchNowAction(deeplink: String) {
+    Alert.showToast(message: "\(deeplink)")
+  }
+  
+  func onUserAction(
+    action: UserAction,
+    assetId: String?,
+    productUrl: String?,
+    eventRefId: Int,
+    navigationController: UINavigationController
+  ) {
+    switch action {
+    case .addToCart:
+      guard let gid = assetId else { return }
+      Global.shared.fetchProductDetails(productId: gid) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let product):
+            let bundle = Bundle(for: ProductDetailViewController.self)
+            let storyboard = UIStoryboard(
+              name: "ProductDetailStoryboard",
+              bundle: bundle)
+            guard let controller = storyboard.instantiateViewController(
+              withIdentifier: ProductDetailViewController.className
+            ) as? ProductDetailViewController else {
+              return
+            }
+            controller.product = product
+            controller.variants = product.variants
+            controller.delegate = self
+            controller.modalPresentationStyle = .overCurrentContext
+            navigationController.present(controller, animated: true, completion: nil)
+            
+          case .failure(_):
+            Alert.showToast(message: "Failure to fetch the product")
+          }
+        }
+      }
+      
+    case .openBrowser:
+      // Client app can decide to push a web view or handoff to Safari.
+      Alert.showToast(message: "\(productUrl ?? "")")
+    }
+  }
+  
+  func onTapAddToCart(product: VariantVM?) {
+    if let productId = product?.id {
+      Global.shared.addVariantToShopifyCart(
+        variantId: productId
+      ) { [weak self] result in
+        guard let weakSelf = self else { return }
+        switch result {
+        case .success(let info):
+          // Store the cart URL (not the checkout URL)
+          let cartId = info.checkoutUrl.components(separatedBy: "/cart/").last
+          Global.shared.setShopifyCartUrl(shopifyCartUrl: "https://\(ShopifyConfig.shopDomain)/cart/\(cartId ?? "")")
+          GluedIn.shared.logShoppingStage(Stage: .addToCart, status: true, error: nil)
+          
+        case .failure(let error):
+          print(error)
+          GluedIn.shared.logShoppingStage(Stage: .addToCart, status: false, error: error.localizedDescription)
+        }
+      }
+    }
+  }
+  
+  func navigateToCart(viewController: UIViewController?) {
+    let bundle = Bundle(for: AddToCartViewController.self)
+    let storyboard = UIStoryboard(
+      name: "AddToCartStoryboard",
+      bundle: bundle)
+    guard let controller = storyboard.instantiateViewController(
+      withIdentifier: AddToCartViewController.className
+    ) as? AddToCartViewController else {
+      return
+    }
+    controller.shopifyCartId = Global.shared.getShopifyCartId()
+    controller.shopifyCartUrl = Global.shared.getShopifyCartUrl()
+    controller.parentView = viewController
+    controller.delegate = self
+    viewController?.navigationController?.pushViewController(controller, animated: false)
+  }
+  
+  /// User chose to proceed to checkout from the cart screen.
+  /// Opens the last-known `shopifyCartUrl` in the app web view.
+  func onTapCheckout(carts: [CartLineVM]?, view: UIViewController?) {
+    if let shopifyCartUrl = Global.shared.getShopifyCartUrl() {
+      openWebView(url: shopifyCartUrl, title: "Checkout", viewController: view)
+    }
+  }
+  
+  func showOrderHistory(viewController: UIViewController?) {
+    let shop = ShopifyConfig.shopDomain
+    let base = "https://\(shop)"
+    let loginPath = "/account" // storefront login
+    let urlString = base + loginPath
+    openWebView(url: urlString, title: "My Orders", viewController: viewController)
+  }
+  
+  func openWebView(url: String, title: String? = nil, viewController: UIViewController?) {
+    let bundle = Bundle(for: WebViewController.self)
+    let storyboard = UIStoryboard(
+      name: "WebStoryboard",
+      bundle: bundle)
+    guard let controller = storyboard.instantiateViewController(
+      withIdentifier: WebViewController.className
+    ) as? WebViewController else {
+      return
+    }
+    controller.url = url
+    controller.navTitle = title
+    controller.delegate = self
+    viewController?.navigationController?.pushViewController(controller, animated: false)
+  }
+  
+  func didFinish(title: String?) {
+    switch title {
+    case "Checkout":
+      GluedIn.shared.logShoppingStage(Stage: .checkoutExit, status: true, error: nil)
+    case "My Orders":
+      GluedIn.shared.logShoppingStage(Stage: .myOrderExit, status: true, error: nil)
+    default:
+      break
+    }
+  }
+  
+  func getCartItemCount(completion: @escaping (Result<Int, any Error>) -> Void) {
+    Global.shared.fetchCartItemsQuantity(completion: completion)
+  }
+  
   func onAnalyticsEvent(name: String, properties: [String : Any]) {
     
   }
   
-  func requestForBannerAds(viewController: UIViewController?, adsType: GluedInCoreSDK.AdsType, adUnitID: String?, customParmas: [GluedInCoreSDK.GAMExtraParams]?) -> UIView? {
-    return nil
+  func requestForBannerAds(viewController: UIViewController?, adsType: GluedInCoreSDK.AdsType, adUnitID: String?, customParmas: [GluedInCoreSDK.GAMExtraParams]?, completion: @escaping (UIView?) -> Void) {
+    guard let adUnitID else {
+      completion(nil)
+      return
+    }
+    
+    GADBannerManager.shared.loadBanner(adUnitID: adUnitID, viewController: viewController) { banner in
+      // banner == nil => not loaded / failed => don't show
+      completion(banner)
+    }
   }
   
   func requestForInterstitialAds(viewController: UIViewController?, adsType: GluedInCoreSDK.AdsType, adUnitID: String?, customParmas: [GluedInCoreSDK.GAMExtraParams]?) {
-    
+    if let adId = adUnitID {
+      GADInterstitialManager.shared.loadInterstitialAds(adUnitID: adId) { [weak self] didCompleted in
+        guard let weakSelf = self else { return }
+        if let controller = viewController {
+          weakSelf.getNativeAdControllerInter(view: controller)
+        }
+      } didCompleteWithError: { didCompleteWithError in
+        Debug.Log(message: "Error - \(didCompleteWithError)")
+      }
+    }
+  }
+  
+  func getNativeAdControllerInter(view: UIViewController) {
+    GADInterstitialManager.shared.showInterstitialAds(
+      view: view,
+      didPresent: {
+        debugPrint("In Present")
+      },
+      didDismiss: {
+        debugPrint("didDismiss")
+      },
+      didFailToPresent: { didFailToPresentWithError in
+        debugPrint("didFailToPresent")
+      })
   }
   
   func requestForAdmobNativeAds(viewController: UIViewController?, adUnitID: String?, adsType: GluedInCoreSDK.AdsType, customParmas: [GluedInCoreSDK.GAMExtraParams]?) {
-    
+    if let adUnitID = adUnitID {
+      GADNativeManager().fetchAdsNative(adUnitID: adUnitID) { [weak self] nativeAd in
+        guard let weakSelf = self else { return }
+        weakSelf.gadNativeAd = nativeAd
+      } didFailedWithError: { error in
+        Debug.Log(message: "Error - \(error)")
+      }
+    }
   }
   
   func getAdmobNativeAdsController() -> UIViewController? {
-    return nil
+    guard let ads = gadNativeAd else { return nil }
+    let bundle = Bundle(for: NativeAdVerticalViewController.self)
+    let storyboard = UIStoryboard(
+      name: "NativeAdVerticalView",
+      bundle: bundle)
+    guard let controller = storyboard.instantiateViewController(
+      withIdentifier: NativeAdVerticalViewController.className
+    ) as? NativeAdVerticalViewController else {
+      return UIViewController()
+    }
+    controller.NativeAds = ads
+    return controller
   }
   
   func requestForGamNativeAds(adUnitID: String?, adsType: GluedInCoreSDK.AdsType, configParams: [String : String]?, extraParams: [GluedInCoreSDK.GAMExtraParams]?, adsFormatId: [String]?) {
-    
+    DispatchQueue.main.async {
+      GADNativeManager().loadNativeAds(
+        configParams: configParams,
+        gamExtraParams: extraParams,
+        adUnitID: adUnitID,
+        adsFormatId: adsFormatId
+      ) { [weak self] customNativeAd in
+        guard let weakSelf = self else { return }
+        weakSelf.gadCustomNativeAd = customNativeAd
+      } didFailedWithError: { error in
+        debugPrint("error", error)
+      }
+    }
   }
   
   func getGamNativeAdsController() -> UIViewController? {
-    return nil
+    guard let ads = gadCustomNativeAd else { return nil }
+    let bundle = Bundle(for: NativeAdVerticalViewController.self)
+    let storyboard = UIStoryboard(
+      name: "NativeAdVerticalView",
+      bundle: bundle)
+    guard let controller = storyboard.instantiateViewController(
+      withIdentifier: NativeAdVerticalViewController.className
+    ) as? NativeAdVerticalViewController else {
+      return UIViewController()
+    }
+    controller.customNativeAds = ads
+    return controller
   }
   
   func appContentSwipeEvent(eventName: String?, params: [String : Any]?) {
@@ -595,13 +1019,24 @@ extension GluedInBridge : GluedInDelegate{
   
   
   func onGluedInShareAction(shareData: GluedInCoreSDK.ShareData, viewController: UIViewController?) {
-    print("onGluedInShareAction")
+    //    let subDomain = "links.gluedin.io"
+    let subDomain = "stag-links.gluedin.io"
+    let urlStringWithQueryItems = "https://\(subDomain)/\(shareData.deeplink)"
+    guard let urlToShare = URL(string: urlStringWithQueryItems) else {
+      print("Invalid URL(s)")
+      return
+    }
+    // Prepare the items to share
+    let itemsToShare: [Any] = [urlToShare]
+    // No thumbnail, just present the URL
+    let activityViewController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+    viewController?.present(activityViewController, animated: true, completion: nil)
   }
   
   func onPostKeepShoppingClick(navigationController: UINavigationController?) {
     print("GluedInDelegate onPostKeepShoppingClick Method ")
   }
-    
+  
   func firebaseAnalyticsEvent(name: String, properties: [String : Any]) {
     // Write code for Firebase analytics
   }
@@ -712,10 +1147,6 @@ extension GluedInBridge : GluedInDelegate{
     //
   }
   
-  func onGluedInShareAction(shareData: GluedInCoreSDK.ShareData) {
-    //
-  }
-  
   func appSkipLoginEvent(device_ID: String, platform_name: String, page_name: String) {
     //
   }
@@ -811,90 +1242,337 @@ extension GluedInBridge : GluedInDelegate{
   // MARK: ads call backs and Integration methods:
   /// Native Ads
   func requestForAds(
-          feed: FeedModel?,
-          genre: [String]?,
-          dialect: [String]?,
-          originalLanguage: [String]?,
-          extraParams: [GAMExtraParams]?,
-          adsId: String?,
-          adsFormatId: [String]?
-      ) {
+    feed: FeedModel?,
+    genre: [String]?,
+    dialect: [String]?,
+    originalLanguage: [String]?,
+    extraParams: [GAMExtraParams]?,
+    adsId: String?,
+    adsFormatId: [String]?
+  ) {
+    
+  }
+  
+  func getNativeAdNibName() -> String {
+    return "UnifiedNativeAdCell"
+  }
+  
+  func requestNativeAdCell() -> UITableViewCell {
+    return UITableViewCell()
+  }
+}
 
+extension GluedInBridge: SKProductsRequestDelegate, SKPaymentTransactionObserver {
+  
+  func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    for transaction in transactions {
+      switch transaction.transactionState {
+        
+      case .purchasing:
+        GluedIn.shared.notifyPaymentResult(
+          status: .paymentStarted,
+          transactionId: transaction.transactionIdentifier,
+          seriesId: seriesId,
+          skuId: skuId,
+          paymenyUrl: paymentUrl,
+          packageId: packageId,
+          paymentType: paymentType
+        )
+        
+      case .purchased:
+        SKPaymentQueue.default().finishTransaction(transaction)
+        GluedIn.shared.notifyPaymentResult(
+          status: .paymentSuccess,
+          transactionId: transaction.transactionIdentifier,
+          seriesId: seriesId,
+          skuId: skuId,
+          paymenyUrl: paymentUrl,
+          packageId: packageId,
+          paymentType: paymentType
+        )
+        
+      case .failed:
+        SKPaymentQueue.default().finishTransaction(transaction)
+        GluedIn.shared.notifyPaymentResult(
+          status: .paymentFailed,
+          transactionId: transaction.transactionIdentifier,
+          seriesId: seriesId,
+          skuId: skuId,
+          paymenyUrl: paymentUrl,
+          packageId: packageId,
+          paymentType: paymentType
+        )
+        
+      case .restored:
+        SKPaymentQueue.default().finishTransaction(transaction)
+        GluedIn.shared.notifyPaymentResult(
+          status: .paymentRestored,
+          transactionId: transaction.transactionIdentifier,
+          seriesId: seriesId,
+          skuId: skuId,
+          paymenyUrl: paymentUrl,
+          packageId: packageId,
+          paymentType: paymentType
+        )
+        
+      case .deferred:
+        GluedIn.shared.notifyPaymentResult(
+          status: .paymentDeferred,
+          transactionId: transaction.transactionIdentifier,
+          seriesId: seriesId,
+          skuId: skuId,
+          paymenyUrl: paymentUrl,
+          packageId: packageId,
+          paymentType: paymentType
+        )
+        
+      @unknown default:
+        break
+      }
+    }
+  }
+  
+  func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    if let oProduct = response.products.first {
+      purchase(aProduct: oProduct)
+    } else {
+      GluedIn.shared.notifyPaymentResult(
+        status: .paymentCancelled,
+        transactionId: nil,
+        seriesId: seriesId,
+        skuId: skuId,
+        paymenyUrl: paymentUrl,
+        packageId: packageId,
+        paymentType: paymentType
+      )
+    }
+  }
+  
+  func purchase(aProduct: SKProduct) {
+    let payment = SKMutablePayment(product: aProduct)
+    payment.applicationUsername = userId
+    SKPaymentQueue.default().add(self)
+    SKPaymentQueue.default().add(payment)
+  }
+}
+
+extension GluedInBridge {
+  
+  @available(iOS 15.0, *)
+  private static var sk2ObserverStarted = false
+  
+  @available(iOS 15.0, *)
+  private static var sk2UpdatesTask: Task<Void, Never>?
+  
+  @available(iOS 15.0, *)
+  private func startObservingStoreKit2IfNeeded() {
+    guard !Self.sk2ObserverStarted else { return }
+    Self.sk2ObserverStarted = true
+    
+    // ✅ Capture snapshot on MainActor (safe for Swift 6)
+    let snapshot = self.currentPaymentSnapshot()
+    
+    Self.sk2UpdatesTask = Task.detached(priority: .background) {
+      for await result in Transaction.updates {
+        
+        let transaction: Transaction
+        do {
+          transaction = try SK2Verifier.checkVerified(result)
+        } catch {
+          continue
+        }
+        
+        // Only handle matching product
+        if let currentSku = snapshot.skuId, !currentSku.isEmpty, transaction.productID != currentSku {
+          await transaction.finish()
+          continue
+        }
+        
+        let txId = String(transaction.id)
+        
+        // ✅ Notify on main thread (UI safe)
+        // Don't notify success here (avoid double log).
+        // Observer will emit success from Transaction.updates.
+        /*
+         await MainActor.run {
+         GluedIn.shared.notifyPaymentResult(
+         status: .paymentSuccess,
+         transactionId: txId,
+         seriesId: snapshot.seriesId,
+         skuId: snapshot.skuId,
+         paymenyUrl: snapshot.paymentUrl,
+         packageId: snapshot.packageId,
+         paymentType: snapshot.paymentType
+         )
+         }
+         */
+        await transaction.finish()
+      }
+    }
+  }
+  
+  @available(iOS 15.0, *)
+  private func makeAccountToken(from userId: String) -> UUID? {
+    let trimmed = userId.trimmingCharacters(in: .whitespacesAndNewlines)
+    return UUID(uuidString: trimmed)
+  }
+  
+  @available(iOS 15.0, *)
+  private func purchaseStoreKit2(
+    productId: String,
+    userId: String?
+  ) {
+    
+    let snapshot = self.currentPaymentSnapshot()
+    
+    // ✅ Only for subscription we pass appAccountToken
+    let appAccountToken: UUID? = {
+      guard snapshot.paymentType == .inAppPurchaseSubscription,
+            let userId = userId,
+            !userId.isEmpty
+      else {
+        return nil   // ✅ IAP → nil
+      }
+      return makeAccountToken(from: userId)
+    }()
+    
+    Task.detached(priority: .userInitiated) {
+      
+      // ---- Payment started
+      await MainActor.run {
+        GluedIn.shared.notifyPaymentResult(
+          status: .paymentStarted,
+          transactionId: nil,
+          seriesId: snapshot.seriesId,
+          skuId: snapshot.skuId,
+          paymenyUrl: snapshot.paymentUrl,
+          packageId: snapshot.packageId,
+          paymentType: snapshot.paymentType
+        )
       }
       
-  // MARK: Banner Ads
-func requestForBannerView(viewController: UIViewController?) -> UIView {
+      do {
+        let products = try await Product.products(for: [productId])
+        
+        guard let product = products.first else {
+          await MainActor.run {
+            GluedIn.shared.notifyPaymentResult(
+              status: .paymentCancelled,
+              transactionId: nil,
+              seriesId: snapshot.seriesId,
+              skuId: snapshot.skuId,
+              paymenyUrl: snapshot.paymentUrl,
+              packageId: snapshot.packageId,
+              paymentType: snapshot.paymentType
+            )
+          }
+          return
+        }
+        
+        // ✅ Purchase (token only for subscription)
+        let result: Product.PurchaseResult
+        if let token = appAccountToken {
+          result = try await product.purchase(
+            options: [.appAccountToken(token)]
+          )
+        } else {
+          result = try await product.purchase()
+        }
+        
+        switch result {
+          
+        case .success(let verificationResult):
+          let transaction = try SK2Verifier.checkVerified(verificationResult)
+          let txId = String(transaction.id)
+          
+          await MainActor.run {
+            GluedIn.shared.notifyPaymentResult(
+              status: .paymentSuccess,
+              transactionId: txId,
+              seriesId: snapshot.seriesId,
+              skuId: snapshot.skuId,
+              paymenyUrl: snapshot.paymentUrl,
+              packageId: snapshot.packageId,
+              paymentType: snapshot.paymentType
+            )
+          }
+          
+          await transaction.finish()
+          
+        case .userCancelled:
+          await MainActor.run {
+            GluedIn.shared.notifyPaymentResult(
+              status: .paymentCancelled,
+              transactionId: nil,
+              seriesId: snapshot.seriesId,
+              skuId: snapshot.skuId,
+              paymenyUrl: snapshot.paymentUrl,
+              packageId: snapshot.packageId,
+              paymentType: snapshot.paymentType
+            )
+          }
+          
+        case .pending:
+          await MainActor.run {
+            GluedIn.shared.notifyPaymentResult(
+              status: .paymentDeferred,
+              transactionId: nil,
+              seriesId: snapshot.seriesId,
+              skuId: snapshot.skuId,
+              paymenyUrl: snapshot.paymentUrl,
+              packageId: snapshot.packageId,
+              paymentType: snapshot.paymentType
+            )
+          }
+          
+        @unknown default:
+          await MainActor.run {
+            GluedIn.shared.notifyPaymentResult(
+              status: .paymentFailed,
+              transactionId: nil,
+              seriesId: snapshot.seriesId,
+              skuId: snapshot.skuId,
+              paymenyUrl: snapshot.paymentUrl,
+              packageId: snapshot.packageId,
+              paymentType: snapshot.paymentType
+            )
+          }
+        }
+        
+      } catch {
+        await MainActor.run {
+          GluedIn.shared.notifyPaymentResult(
+            status: .paymentFailed,
+            transactionId: nil,
+            seriesId: snapshot.seriesId,
+            skuId: snapshot.skuId,
+            paymenyUrl: snapshot.paymentUrl,
+            packageId: snapshot.packageId,
+            paymentType: snapshot.paymentType
+          )
+        }
+      }
+    }
+  }
   
-  let vwCell = UIView()
-  return vwCell
-}
-
-    // MARK: Intertital Ads integation
-func requestForAdsInter(view: UIViewController) {
-
-}
-
-func getNativeAdControllerInter(view: UIViewController) {
-
-}
-
-func getNativeAdNibName() -> String {
+  // MARK: - Snapshot helper (isolated access in one place)
   
-  return "UnifiedNativeAdCell"
-}
-
-  // MARK: Card based native Ads
+  private struct PaymentSnapshot {
+    let seriesId: String?
+    let skuId: String?
+    let paymentUrl: String?
+    let packageId: String?
+    let paymentType: PaymentMethod
+  }
   
-//  func requestNativeAdCell() -> UITableViewCell {
-//    let nativeAdCell = UITableViewCell()  //UnifiedNativeAdCell(style: .default, reuseIdentifier: "UnifiedNativeAdCellIdentifier")
-//    return nativeAdCell
-//  }
-
-  func requestNativeAdCell() -> UITableViewCell {
-    // Write code for Native Ad on card based feed cell
-    // It will return the table view cell which GlueDIn use with in the cell
-    let nativeAdCell = UITableViewCell()  //UnifiedNativeAdCell(style: .default, reuseIdentifier: "UnifiedNativeAdCellIdentifier")
-
-//      let nativeAdCell = UnifiedNativeAdCell(style: .default, reuseIdentifier: "UnifiedNativeAdCellIdentifier")
-//      // Access the adView directly since it is now initialized programmatically in the UnifiedNativeAdCell class
-//      let adView = nativeAdCell.adView
-//      // Configure the ad cell with a GADNativeAd
-//      nativeAdCell.nativeAdsLoader(requiredNumberOfAds: 1) { nativeAd in
-//          //nativeAd.rootViewController = self
-//          adView?.nativeAd = nativeAd
-//          adView?.mediaView?.mediaContent = nativeAd?.mediaContent
-//          if let mediaView = adView?.mediaView,
-//             nativeAd?.mediaContent.aspectRatio ?? 0 > 0 {
-//              let heightConstraint = NSLayoutConstraint(
-//                  item: mediaView,
-//                  attribute: .height,
-//                  relatedBy: .equal,
-//                  toItem: mediaView,
-//                  attribute: .width,
-//                  multiplier: CGFloat(1 / (nativeAd?.mediaContent.aspectRatio ?? 1)),
-//                  constant: 0)
-//              heightConstraint.isActive = true
-//          }
-//          (adView?.headlineView as? UILabel)?.text = nativeAd?.headline
-//          adView?.headlineView?.isHidden = nativeAd?.headline == nil
-//
-//          (adView?.bodyView as? UILabel)?.text = nativeAd?.body
-//          adView?.bodyView?.isHidden = nativeAd?.body == nil
-//
-//          adView?.callToActionView?.layer.cornerRadius = (adView?.callToActionView?.frame.height ?? 0) / 2
-//          (adView?.callToActionView as? UIButton)?.setTitleColor(.white, for: .normal)
-//          adView?.callToActionView?.backgroundColor = .blue
-//          (adView?.callToActionView as? UIButton)?.setTitle(nativeAd?.callToAction, for: .normal)
-//          adView?.callToActionView?.isHidden = nativeAd?.callToAction == nil
-//          adView?.callToActionView?.isUserInteractionEnabled = false
-//          adView?.iconView?.layer.cornerRadius = (adView?.iconView?.frame.height ?? 0) / 2
-//          adView?.iconView?.layer.borderColor = UIColor.white.cgColor
-//          adView?.iconView?.layer.borderWidth = 1
-//          (adView?.iconView as? UIImageView)?.image = nativeAd?.icon?.image
-//          adView?.iconView?.isHidden = nativeAd?.icon == nil
-//      }
-
-    //nativeAdCell.updateUI()
-    return nativeAdCell
+  // ✅ Read actor-isolated properties in one place
+  private func currentPaymentSnapshot() -> PaymentSnapshot {
+    return PaymentSnapshot(
+      seriesId: self.seriesId,
+      skuId: self.skuId,
+      paymentUrl: self.paymentUrl,
+      packageId: self.packageId,
+      paymentType: self.paymentType
+    )
   }
 }

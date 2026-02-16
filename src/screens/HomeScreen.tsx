@@ -151,6 +151,7 @@ const HomeScreen = ({ navigation }: any) => {
         feedRailData,
         Config.API_KEY,
         Config.SECRET_KEY,
+        Config.BASE_URL,
         Config.DEFAULT_EMAIl,
         Config.DEFAULT_PASSWORD,
         Config.DEFAULT_FULLNAME,
