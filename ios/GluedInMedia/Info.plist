@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>put_your_ad_id</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -235,52 +235,22 @@
 	<dict>
 		<key>EnableProductCallback</key>
 		<true/>
-		<key>DEMONSTRATION_ENABLE</key>
-		<false/>
 		<key>SHOW_LOGOUT</key>
 		<false/>
 		<key>SHOW_PAYMENT_HISTORY</key>
 		<false/>
-		<key>SHOW_SEARCH_TAB</key>
-		<true/>
 		<key>ANDROID_PRODUCT_PACKAGE</key>
 		<string>${ANDROID_PRODUCT_PACKAGE}</string>
-		<key>API_KEY</key>
-		<string>cc56b97f-3b80-4117-ba42-62bcde357365</string>
-		<key>APP_STORE_ID</key>
-		<string>1622358421</string>
-		<key>ASSOCIATED_DOMAIN</key>
-		<string>gluedincard.page.link</string>
 		<key>BACK_ENABLE</key>
 		<string>1</string>
-		<key>CLIENT_ID</key>
-		<string>484226827821-dnup9ta4e82espmafj6h75jtjl50lh10.apps.googleusercontent.com</string>
-		<key>DIRECT_MESSAGE_URL</key>
-		<string>https://chat-server.gluedin.io/</string>
 		<key>DISABLE_DEFAULT_SHARE</key>
 		<true/>
 		<key>ENABLE_DEFAULT_PROFILE</key>
 		<false/>
-		<key>IS_AUTH_SKIP</key>
-		<string>1</string>
 		<key>IS_BOTTOM_BAR_ENABLE</key>
 		<string>1</string>
 		<key>IS_DEBUG_MODE</key>
 		<true/>
-		<key>IS_FOLLOW_ENABLE_ONFEED</key>
-		<true/>
-		<key>MINIMUM_VIEW_DURATION</key>
-		<integer>3</integer>
-		<key>PARENT_APP_ENABLE</key>
-		<string>0</string>
-		<key>SECRET_KEY</key>
-		<string>5703a587-9146-49cb-8ca6-b7ad14d64445</string>
-		<key>SERVER_URL</key>
-		<string>https://stag-v2-api.gluedin.io</string>
-		<key>TIME_TO_REFRESH_BANDWIDTH</key>
-		<integer>60</integer>
-		<key>VERTICAL_FEED</key>
-		<string>1</string>
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

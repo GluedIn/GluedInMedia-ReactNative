@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import com.test.NavigationModule;
 
 public class NavigationPackage implements ReactPackage {
     private ReactApplicationContext reactContext;

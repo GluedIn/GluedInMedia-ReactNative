@@ -62,7 +62,7 @@ class GluedInBridge: RCTEventEmitter {
     GluedIn.shared.initWithUserInfo(
       apiKey: apiKey,
       secretKey: secretKey,
-      baseURL: "https://stag-v2-api.gluedin.io",
+      baseURL: "https://apiv2.gluedin.io/",
       email: email,
       password: password,
       fullName: fullName,
