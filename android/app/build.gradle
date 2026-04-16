@@ -121,7 +121,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-    implementation 'com.gluedin.nocode:gluedin:6.1.0.0'
+    implementation 'com.gluedin.nocode:gluedin:6.2.0.0'
 
     implementation 'com.android.billingclient:billing:8.0.0'
     implementation 'com.shopify:checkout-sheet-kit:3.5.0'
