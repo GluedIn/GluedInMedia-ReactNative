@@ -34,7 +34,7 @@ allprojects {
             url = uri("https://maven.pkg.github.com/plussaw/GluedIn")
             credentials {
                 username = "plussaw"
-                password = "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"
+                password = "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"
             }
         }
     }
